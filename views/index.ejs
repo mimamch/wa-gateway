@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1 class="title">SCAN QR TO CONNECT</h1>
+    <img id="qr" style="max-width: 500px" alt="QR NOT SHOWING" />
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      let qrcodesrc = document.getElementById("qr").src;
+      let imgUrl;
+      socket.on("id", (data) => {
+        console.log(data);
+      });
+      socket.on("qr", (data) => {
+        // qr.src = "";
+
+        if (data.status == "open") {
+          document.querySelector(".title").innerHTML = "CONNECTED";
+          document.getElementById("qr").hidden = true;
+        } else {
+          setTimeout(() => {
+            document.getElementById("qr").src = `qr/${data.fileName}`;
+          }, 1000);
+          setInterval(() => {
+            document.getElementById("qr").src = "";
+            document.getElementById("qr").src = `qr/${data.fileName}`;
+          }, 5000);
+          // const blob = new Blob([data.qr]);
+          // const imgBlobUrl = window.URL.createObjectURL(blob);
+          // qrcode.src = imgBlobUrl;
+        }
+      });
+    </script>
+  </body>
+</html>

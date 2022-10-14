@@ -1,0 +1,26 @@
+{
+  "name": "baileys",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon --ignore ./baileys_auth_info --ignore ./public  --ignore app.js",
+    "production": "node server.js -- --staging"
+  },
+  "dependencies": {
+    "@adiwajshing/baileys": "^4.3.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "moment": "^2.29.4",
+    "morgan": "~1.9.1",
+    "pino": "^8.3.1",
+    "qrcode": "^1.5.1",
+    "qrcode-terminal": "^0.12.0",
+    "queue": "^6.0.2",
+    "socket.io": "^4.5.1"
+  }
+}
