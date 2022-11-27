@@ -13,6 +13,6 @@ module.exports = {
     }
     if (number[0] == "8") return "62" + finalNumber;
 
-    return false;
+    return number;
   },
 };
