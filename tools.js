@@ -13,5 +13,3 @@ exports.processNumber = (number) => {
 
   return number;
 };
-
-console.log(this.processNumber("85838707828"));
