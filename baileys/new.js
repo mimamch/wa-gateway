@@ -12,7 +12,7 @@ const makeWASocket = baileys.default;
 const MAIN_LOGGER = require("../src/logger");
 const { getRooms, sendQR } = require("../src/socket-io");
 const logger = MAIN_LOGGER.child({});
-logger.level = "trace";
+logger.level = "warn";
 const qrcode = require("qrcode");
 const useStore = !process.argv.includes("--no-store");
 
@@ -32,7 +32,7 @@ const startSock = async () => {
     printQRInTerminal: true,
     auth: state,
     msgRetryCounterMap,
-    // markOnlineOnConnect: false,
+    markOnlineOnConnect: false,
   });
 
   // the process function lets you process all events that just occurred
