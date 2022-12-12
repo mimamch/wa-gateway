@@ -86,7 +86,7 @@ const startSock = async () => {
             console.log("Connection closed. You are logged out.");
             const dir = path.resolve(__dirname, "../", "baileys_auth_info");
             if (fs.existsSync(dir)) {
-              fs.rmdirSync(dir, { recursive: true });
+              fs.rmSync(dir, { force: true, recursive: true });
             }
             startSock();
           }
