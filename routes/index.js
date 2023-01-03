@@ -12,7 +12,8 @@ var router = express.Router();
 
 router.use("/start-session", async (req, res) => {
   try {
-    const sessionName = req.body.name || req.query.name || req.headers.name;
+    const sessionName =
+      req.body.session || req.query.session || req.headers.session;
     if (!sessionName) {
       throw new Error("Bad Request");
     }
@@ -32,7 +33,8 @@ router.use("/start-session", async (req, res) => {
 });
 router.use("/delete-session", async (req, res) => {
   try {
-    const sessionName = req.body.name || req.query.name || req.headers.name;
+    const sessionName =
+      req.body.session || req.query.session || req.headers.session;
     res.status(200).json({
       status: true,
       data: {
