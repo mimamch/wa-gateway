@@ -118,6 +118,9 @@ exports.isNumberExist = async (session, receiver, isGroup) => {
 };
 
 exports.init = () => {
+  if (!fs.existsSync(path.resolve("credentials"))) {
+    fs.mkdirSync(path.resolve("credentials"));
+  }
   fs.readdir(path.resolve("credentials"), async (err, files) => {
     if (err) {
       throw err;
