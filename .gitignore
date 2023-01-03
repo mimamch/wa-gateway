@@ -2,4 +2,4 @@ node_modules/
 baileys_auth_info/
 qr/
 kata-kasar.json
-credentials/
+credentials/*
