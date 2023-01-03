@@ -4,8 +4,15 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon --ignore ./baileys_auth_info --ignore ./public  --ignore app.js",
+    "dev": "nodemon --ignore ./baileys_auth_info --ignore ./public  --ignore app.js --ignore ./credentials",
     "production": "node server.js -- --staging"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "baileys_auth_info",
+      "public",
+      "credentials"
+    ]
   },
   "dependencies": {
     "@adiwajshing/baileys": "^4.3.0",

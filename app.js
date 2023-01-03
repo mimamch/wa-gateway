@@ -20,13 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 let isWaActive = global.sock || false;
-setTimeout(() => {
-  const dir = path.resolve(__dirname, "baileys_auth_info");
-  if (!fs.existsSync(dir)) return;
-  global.sock ? (isWaActive = global.sock) : null;
-  if (isWaActive) return;
-  startSock();
-}, 1000);
+// setTimeout(() => {
+//   const dir = path.resolve(__dirname, "baileys_auth_info");
+//   if (!fs.existsSync(dir)) return;
+//   global.sock ? (isWaActive = global.sock) : null;
+//   if (isWaActive) return;
+//   startSock();
+// }, 1000);
 
 app.use("/up", async (req, res) => {
   // io.emit("qr", { data: "ini up" });
@@ -152,6 +152,8 @@ app.use("/send-message-queue", async (req, res) => {
     });
   }
 });
+
+app.use("/", require("./routes/index"));
 
 app.use("/send-message", async (req, res) => {
   try {
