@@ -1,4 +1,53 @@
 
+# Multi Session Whatsapp Gateway NodeJS
+
+A multi session Whatsapp gateway with NodeJS
+- Support multi device
+- Support multi session / multi phone number
+- Anti delay message
+
+Based on [Baileys Typescript/Javascript WhatsApp Web API](https://github.com/adiwajshing/Baileys) 
+
+#### ⚠ UPGRADING DEPENDENCIES TO LATEST CAN CAUSE SOME UNKNOWN ERROR ⚠ 
+
+
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`PORT` // which port to running on your machine
+
+
+
+## Install and Running
+
+Clone the project
+
+```bash
+  git clone https://github.com/mimamch/wa_gateway.git
+```
+
+Go to the project directory
+
+```bash
+  cd wa_gateway
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
+
 ## API Reference
 
 #### Add new session
