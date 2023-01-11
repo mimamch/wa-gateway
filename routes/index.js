@@ -26,7 +26,7 @@ router.use("/start-session", async (req, res) => {
     res.status(400).json({
       status: false,
       data: {
-        error: error.message,
+        error: error?.message,
       },
     });
   }
@@ -46,7 +46,7 @@ router.use("/delete-session", async (req, res) => {
     res.status(500).json({
       status: false,
       data: {
-        error: error.message,
+        error: error?.message,
       },
     });
   }
@@ -105,7 +105,7 @@ router.use("/send-message", async (req, res) => {
     res.status(500).json({
       status: false,
       data: {
-        error: error.message,
+        error: error?.message,
       },
     });
   }
@@ -140,7 +140,7 @@ router.use("/send-bulk-message", async (req, res) => {
     res.status(500).json({
       status: false,
       data: {
-        error: error.message,
+        error: error?.message,
       },
     });
   }
