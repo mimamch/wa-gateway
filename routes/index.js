@@ -10,6 +10,11 @@ const {
 } = require("../whatsapp");
 var router = express.Router();
 
+/**
+  @param {import('express').Request} req
+  @param {import('express').Response} res
+ */
+
 router.use("/start-session", async (req, res) => {
   try {
     const sessionName =
