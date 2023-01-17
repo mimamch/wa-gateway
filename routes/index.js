@@ -7,6 +7,8 @@ const {
   sendMessageText,
   getSession,
   startWhatsapp,
+  getSessionList,
+  sendSticker,
 } = require("../whatsapp");
 var router = express.Router();
 
@@ -150,5 +152,50 @@ router.use("/send-bulk-message", async (req, res) => {
     });
   }
 });
+router.use("/sessions", async (req, res) => {
+  try {
+    const sessions = getSessionList();
+
+    res.status(200).json({
+      status: true,
+      data: {
+        sessions,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: false,
+      data: {
+        error: error?.message,
+      },
+    });
+  }
+});
+// router.use("/send-sticker", async (req, res) => {
+//   try {
+//     const session = getSession(
+//       req.body.session || req.query.session || req.headers.session || "mimamch"
+//     );
+//     const sessions = sendSticker(session, {
+//       receiver: processNumber("085838707828"),
+//     });
+
+//     res.status(200).json({
+//       status: true,
+//       data: {
+//         sessions,
+//       },
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       status: false,
+//       data: {
+//         error: error?.message,
+//       },
+//     });
+//   }
+// });
 
 module.exports = router;

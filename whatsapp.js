@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const { processNumber } = require("./tools");
 const { toDataURL } = require("qrcode");
+const handleMessageUpsert = require("./handle-message-upsert");
 let msgRetryCounterMap = {};
 
 const sessions = new Map();
@@ -69,8 +70,10 @@ exports.startWhatsapp = async (name, res, scan) => {
       await saveCreds();
     }
   });
+  // sock.ev.on("messages.upsert", (msg) =>
+  //   handleMessageUpsert(sock, msg.messages[0])
+  // );
 };
-
 /**
  * @returns {(import('@adiwajshing/baileys').AnyWASocket|null)}
  */
@@ -115,6 +118,19 @@ exports.isNumberExist = async (session, receiver, isGroup) => {
   } catch (error) {
     return false;
   }
+};
+
+exports.getSessionList = () => {
+  return Array.from(sessions.keys());
+};
+
+/**
+ * @param {import('@adiwajshing/baileys').AnyWASocket} session
+ */
+exports.sendSticker = async (session, { receiver, sticker }) => {
+  return session.sendMessage(receiver, {
+    sticker: "https://placehold.jp/150x150.png",
+  });
 };
 
 exports.init = () => {

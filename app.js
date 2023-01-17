@@ -244,6 +244,12 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
+  return res.status(404).json({
+    status: false,
+    data: {
+      error: "route not found",
+    },
+  });
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
