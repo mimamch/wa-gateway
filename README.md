@@ -52,7 +52,7 @@ Start the server
 
 #### Add new session
 
-```http
+```
   GET /start-session?session=NEW_SESSION_NAME&scan=true
 ```
 
@@ -63,7 +63,7 @@ Start the server
 
 #### Send Text Message
 
-```http
+```
   POST /send-message
 ```
 
@@ -76,7 +76,7 @@ Start the server
 
 #### Send Bulk Message
 
-```http
+```
   POST /send-bulk-message
 ```
 
@@ -89,7 +89,7 @@ Start the server
 
 #### Delete session
 
-```http
+```
   GET /delete-session?session=SESSION_NAME
 ```
 
