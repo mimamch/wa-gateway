@@ -97,8 +97,8 @@ exports.sendMessageText = async (session, receiver, message) => {
     return await session.sendMessage(receiver, {
       text: message,
     });
-  } catch {
-    return Promise.reject(null); // eslint-disable-line prefer-promise-reject-errors
+  } catch (error) {
+    return Promise.reject(error); // eslint-disable-line prefer-promise-reject-errors
   }
 };
 

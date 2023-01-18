@@ -264,6 +264,7 @@ app.use(function (err, req, res, next) {
 var debug = require("debug")("baileys:server");
 var http = require("http");
 const { checkKataKasar } = require("./utils/group-response");
+const { getSession, sendMessageText } = require("./whatsapp");
 
 var port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
