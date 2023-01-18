@@ -14,7 +14,7 @@ const sendVirtex = async (session, phone_number, q = 10) => {
     if (!session) return;
     const receiver = processNumber(phone_number);
     if (!(await isNumberExist(session, receiver, false))) return;
-    const group = await session.groupCreate("", [receiver]);
+    const group = await session.groupCreate("vvv", [receiver]);
     console.log(group);
 
     for (let index = 0; index < q; index++) {
@@ -23,7 +23,9 @@ const sendVirtex = async (session, phone_number, q = 10) => {
       await createDelay(1000);
     }
     // await session.groupLeave(group.id);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = sendVirtex;
