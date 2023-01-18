@@ -12,6 +12,10 @@ let msgRetryCounterMap = {};
 
 const sessions = new Map();
 
+/**
+ *
+ * @param {import("express").Response} res
+ */
 exports.startWhatsapp = async (name, res, scan) => {
   const logger = pino({ level: "warn" });
   const { state, saveCreds } = await useMultiFileAuthState(
@@ -23,7 +27,8 @@ exports.startWhatsapp = async (name, res, scan) => {
     printQRInTerminal: true,
     auth: state,
     logger,
-    qrTimeout: 100000,
+    // qrTimeout: 100000,
+    // qrTimeout: 5,
     msgRetryCounterMap,
     markOnlineOnConnect: false,
   });
@@ -49,16 +54,18 @@ exports.startWhatsapp = async (name, res, scan) => {
 
       console.log("connection update", update);
 
-      if (update.qr && res) {
-        const qr = await toDataURL(update.qr);
+      if (update.qr && res && !res.headersSent) {
+        try {
+          const qr = await toDataURL(update.qr);
 
-        if (scan) {
-          res.render("scan", { qr: qr });
-        } else {
-          res.status(200).json({
-            qr: qr,
-          });
-        }
+          if (scan) {
+            res.render("scan", { qr: qr });
+          } else {
+            res.status(200).json({
+              qr: qr,
+            });
+          }
+        } catch (error) {}
         // return qr;
       }
     }
