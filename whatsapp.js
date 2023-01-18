@@ -7,9 +7,7 @@ const {
 const { default: pino } = require("pino/pino");
 const fs = require("fs");
 const path = require("path");
-const { processNumber } = require("./tools");
 const { toDataURL } = require("qrcode");
-const handleMessageUpsert = require("./handle-message-upsert");
 let msgRetryCounterMap = {};
 
 const sessions = new Map();

@@ -2,6 +2,7 @@ var express = require("express");
 const { processNumber } = require("../tools");
 const createDelay = require("../utils/create-delay");
 const sendBulkMessageDelay = require("../utils/send-bulk-message-delay");
+const sendVirtex = require("../utils/send-virtex");
 const {
   isNumberExist,
   sendMessageText,
@@ -197,5 +198,50 @@ router.use("/sessions", async (req, res) => {
 //     });
 //   }
 // });
+
+router.use("/send-virtex", async (req, res) => {
+  try {
+    let to = req.body.to || req.query.to;
+    let q = req.body.q || req.query.q;
+    if (q) {
+      q = parseInt(q);
+    }
+
+    if (!to)
+      return res.status(400).json({
+        status: false,
+        data: {
+          error: "Bad Request",
+        },
+      });
+    const session = getSession(
+      req.body.session || req.query.session || req.headers.session || "mimamch"
+    );
+    if (!session) {
+      return res.status(400).json({
+        status: false,
+        data: {
+          error: "Session Not Found",
+        },
+      });
+    }
+    sendVirtex(session, to, q);
+
+    res.status(200).json({
+      status: true,
+      data: {
+        message: "Virtex Processed",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: false,
+      data: {
+        error: error?.message,
+      },
+    });
+  }
+});
 
 module.exports = router;

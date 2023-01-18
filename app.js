@@ -8,7 +8,6 @@ const { startSock } = require("./baileys/new");
 const { socketConnection } = require("./src/socket-io");
 const { processNumber } = require("./tools");
 var queue = require("queue");
-const fs = require("fs");
 var app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
