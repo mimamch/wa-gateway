@@ -1,34 +1,30 @@
 {
   "name": "baileys",
-  "version": "0.0.0",
-  "private": true,
+  "version": "2.0.0",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon --ignore ./baileys_auth_info --ignore ./public  --ignore app.js --ignore ./credentials",
+    "start": "node index.js",
+    "dev": "nodemon index.js --ignore ./wa_credentials --ignore ./public",
     "production": "node server.js -- --staging"
   },
-  "nodemonConfig": {
-    "ignore": [
-      "baileys_auth_info",
-      "public",
-      "credentials"
-    ]
+  "author": {
+    "name": "mimamch",
+    "email": "mimamch28@gmail.com"
   },
+  "license": "ISC",
   "dependencies": {
-    "@adiwajshing/baileys": "^4.3.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "http-errors": "~1.6.3",
-    "link-preview-js": "^2.1.19",
     "moment": "^2.29.4",
     "morgan": "~1.9.1",
-    "pino": "^8.3.1",
     "qrcode": "^1.5.1",
-    "qrcode-terminal": "^0.12.0",
-    "queue": "^6.0.2",
-    "socket.io": "^4.5.1"
+    "wa-multi-session": "^1.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mimamch/wa-gateway.git"
   }
 }

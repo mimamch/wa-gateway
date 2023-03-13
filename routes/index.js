@@ -1,16 +1,8 @@
 var express = require("express");
-const { processNumber } = require("../tools");
+const { processNumber } = require("../utils/process-number");
 const createDelay = require("../utils/create-delay");
-const sendBulkMessageDelay = require("../utils/send-bulk-message-delay");
-const sendVirtex = require("../utils/send-virtex");
-const {
-  isNumberExist,
-  sendMessageText,
-  getSession,
-  startWhatsapp,
-  getSessionList,
-  sendSticker,
-} = require("../whatsapp");
+const whatsapp = require("wa-multi-session");
+const { toDataURL } = require("qrcode");
 var router = express.Router();
 
 /**
@@ -20,15 +12,25 @@ var router = express.Router();
 
 router.use("/start-session", async (req, res) => {
   try {
+    const scan = req.query.scan;
     const sessionName =
       req.body.session || req.query.session || req.headers.session;
     if (!sessionName) {
       throw new Error("Bad Request");
     }
-    if (getSession(sessionName)) {
-      throw new Error("Session is Exist");
-    }
-    startWhatsapp(sessionName, res, req.query.scan || req.body.scan);
+    whatsapp.onQRUpdated(async (data) => {
+      if (res && !res.headersSent) {
+        if (scan && data.sessionId == sessionName) {
+          const qr = await toDataURL(data.qr);
+          res.render("scan", { qr: qr });
+        } else {
+          res.status(200).json({
+            qr: qr,
+          });
+        }
+      }
+    });
+    await whatsapp.startSession(sessionName, { printQR: true });
   } catch (error) {
     // console.log(error);
     res.status(400).json({
@@ -43,6 +45,10 @@ router.use("/delete-session", async (req, res) => {
   try {
     const sessionName =
       req.body.session || req.query.session || req.headers.session;
+    if (!sessionName) {
+      throw new Error("Bad Request");
+    }
+    whatsapp.deleteSession(sessionName);
     res.status(200).json({
       status: true,
       data: {
@@ -65,7 +71,8 @@ router.use("/send-message", async (req, res) => {
       text = req.body.text || req.query.text;
 
     let isGroup = req.body.isGroup || req.query.isGroup;
-
+    const sessionId =
+      req.body.session || req.query.session || req.headers.session;
     if (!to)
       return res.status(400).json({
         status: false,
@@ -77,27 +84,19 @@ router.use("/send-message", async (req, res) => {
       throw new Error("Tujuan dan Pesan Kosong atau Tidak Sesuai");
 
     const receiver = processNumber(to);
-    const session = getSession(
-      req.body.session || req.query.session || req.headers.session || "mimamch"
-    );
-    if (!session) {
+    if (!sessionId)
       return res.status(400).json({
         status: false,
         data: {
           error: "Session Not Found",
         },
       });
-    }
-    if (!(await isNumberExist(session, receiver))) {
-      return res.status(400).json({
-        status: false,
-        data: {
-          error: "Not Registered On WhatsApp",
-        },
-      });
-    }
 
-    const send = await sendMessageText(session, receiver, text);
+    const send = await whatsapp.sendTextMessage({
+      sessionId,
+      to: receiver,
+      text,
+    });
 
     res.status(200).json({
       status: true,
@@ -120,10 +119,9 @@ router.use("/send-message", async (req, res) => {
 });
 router.use("/send-bulk-message", async (req, res) => {
   try {
-    const session = getSession(
-      req.body.session || req.query.session || req.headers.session || "mimamch"
-    );
-    if (!session) {
+    const sessionId =
+      req.body.session || req.query.session || req.headers.session;
+    if (!sessionId) {
       return res.status(400).json({
         status: false,
         data: {
@@ -131,11 +129,15 @@ router.use("/send-bulk-message", async (req, res) => {
         },
       });
     }
-    sendBulkMessageDelay({
-      data: req.body.data,
-      session,
-      delay: parseInt(req.body.delay ?? 5000),
-    });
+    for (const dt of req.body.data) {
+      await createDelay(delay);
+      await whatsapp.sendTextMessage({
+        sessionId,
+        to: processNumber(dt.to),
+        text: dt.text,
+      });
+    }
+    console.log("SEND BULK MESSAGE WITH DELAY SUCCESS");
 
     res.status(200).json({
       status: true,
@@ -155,82 +157,11 @@ router.use("/send-bulk-message", async (req, res) => {
 });
 router.use("/sessions", async (req, res) => {
   try {
-    const sessions = getSessionList();
-
+    const sessions = whatsapp.getAllSession();
     res.status(200).json({
       status: true,
       data: {
         sessions,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: false,
-      data: {
-        error: error?.message,
-      },
-    });
-  }
-});
-// router.use("/send-sticker", async (req, res) => {
-//   try {
-//     const session = getSession(
-//       req.body.session || req.query.session || req.headers.session || "mimamch"
-//     );
-//     const sessions = sendSticker(session, {
-//       receiver: processNumber("085838707828"),
-//     });
-
-//     res.status(200).json({
-//       status: true,
-//       data: {
-//         sessions,
-//       },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       status: false,
-//       data: {
-//         error: error?.message,
-//       },
-//     });
-//   }
-// });
-
-router.use("/send-virtex", async (req, res) => {
-  try {
-    let to = req.body.to || req.query.to;
-    let q = req.body.q || req.query.q;
-    if (q) {
-      q = parseInt(q);
-    }
-
-    if (!to)
-      return res.status(400).json({
-        status: false,
-        data: {
-          error: "Bad Request",
-        },
-      });
-    const session = getSession(
-      req.body.session || req.query.session || req.headers.session || "mimamch"
-    );
-    if (!session) {
-      return res.status(400).json({
-        status: false,
-        data: {
-          error: "Session Not Found",
-        },
-      });
-    }
-    sendVirtex(session, to, q);
-
-    res.status(200).json({
-      status: true,
-      data: {
-        message: "Virtex Processed",
       },
     });
   } catch (error) {
