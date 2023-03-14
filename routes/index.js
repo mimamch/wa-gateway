@@ -69,8 +69,11 @@ router.use("/send-message", async (req, res) => {
   try {
     let to = req.body.to || req.query.to,
       text = req.body.text || req.query.text;
-
     let isGroup = req.body.isGroup || req.query.isGroup;
+    console.log(
+      "message send from >",
+      req.headers["x-forwarded-for"] || req.socket.remoteAddress
+    );
     const sessionId =
       req.body.session || req.query.session || req.headers.session;
     if (!to)
