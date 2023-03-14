@@ -20,8 +20,8 @@ router.use("/start-session", async (req, res) => {
     }
     whatsapp.onQRUpdated(async (data) => {
       if (res && !res.headersSent) {
+        const qr = await toDataURL(data.qr);
         if (scan && data.sessionId == sessionName) {
-          const qr = await toDataURL(data.qr);
           res.render("scan", { qr: qr });
         } else {
           res.status(200).json({
