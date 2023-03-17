@@ -1,6 +1,6 @@
 {
   "name": "baileys",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js --ignore ./wa_credentials --ignore ./public",
@@ -21,7 +21,7 @@
     "moment": "^2.29.4",
     "morgan": "~1.9.1",
     "qrcode": "^1.5.1",
-    "wa-multi-session": "^1.4.3"
+    "wa-multi-session": "^1.5.0"
   },
   "repository": {
     "type": "git",
