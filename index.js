@@ -39,6 +39,7 @@ app.use(function (err, req, res, next) {
 
 var debug = require("debug")("wa:server");
 var http = require("http");
+const { loadSessionsFromStorage } = require("wa-multi-session");
 
 var port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
@@ -92,3 +93,7 @@ function onListening() {
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
+
+setTimeout(() => {
+  loadSessionsFromStorage();
+}, 20000);
