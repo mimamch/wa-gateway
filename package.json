@@ -1,6 +1,6 @@
 {
   "name": "baileys",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js --ignore ./wa_credentials --ignore ./public",
