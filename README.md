@@ -45,6 +45,11 @@ Start the server
   npm run start
 ```
 
+| Parameter | Type      | Description                            |
+| :-------- | :-------- | :------------------------------------- |
+| `session` | `string`  | **Required**. Create Your Session Name |
+| `scan`    | `boolean` | Print QR at Browser                    |
+
 ## API Reference
 
 #### Add new session
@@ -56,7 +61,7 @@ Start the server
 | Parameter | Type      | Description                            |
 | :-------- | :-------- | :------------------------------------- |
 | `session` | `string`  | **Required**. Create Your Session Name |
-| `scan`    | `boolean` | **Optional**. Print QR at Browser      |
+| `scan`    | `boolean` | Print QR at Browser                    |
 
 #### Send Text Message
 
@@ -64,11 +69,11 @@ Start the server
   POST /send-message
 ```
 
-| Body      | Type     | Description                                 |
-| :-------- | :------- | :------------------------------------------ |
-| `session` | `string` | **Required**. Session Name You Have Created |
-| `to`      | `string` | **Required**. Receiver Phone Number         |
-| `text`    | `string` | **Required**. Text Message                  |
+| Body      | Type     | Description                                                              |
+| :-------- | :------- | :----------------------------------------------------------------------- |
+| `session` | `string` | **Required**. Session Name You Have Created                              |
+| `to`      | `string` | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
+| `text`    | `string` | **Required**. Text Message                                               |
 
 #### Send Bulk Message
 
@@ -76,11 +81,11 @@ Start the server
   POST /send-bulk-message
 ```
 
-| Body      | Type     | Description                                                       |
-| :-------- | :------- | :---------------------------------------------------------------- |
-| `session` | `string` | **Required**. Session Name You Have Created                       |
-| `data`    | `array`  | **Required**. Array Of Object Message Data                        |
-| `delay`   | `number` | **Optional**. Delay Per-message in Miliseconds, Default to 5000ms |
+| Body      | Type     | Description                                         |
+| :-------- | :------- | :-------------------------------------------------- |
+| `session` | `string` | **Required**. Session Name You Have Created         |
+| `data`    | `array`  | **Required**. Array Of Object Message Data          |
+| `delay`   | `number` | Delay Per-message in Miliseconds, Default to 5000ms |
 
 #### Delete session
 
