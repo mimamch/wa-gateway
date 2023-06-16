@@ -24,28 +24,25 @@ PORT=5000 // which port to running on your machine
 Clone the project
 
 ```bash
-git clone https://github.com/mimamch/wa_gateway.git
-
+  git clone https://github.com/mimamch/wa_gateway.git
 ```
 
 Go to the project directory
 
 ```bash
-cd wa_gateway
+  cd wa_gateway
 ```
 
 Install dependencies
 
 ```bash
-npm install
-
+  npm install
 ```
 
 Start the server
 
 ```bash
-npm start
-
+  npm run start
 ```
 
 ## API Reference
@@ -53,64 +50,44 @@ npm start
 #### Add new session
 
 ```
-GET /start-session?session=NEW_SESSION_NAME&scan=true
-
+  GET /start-session?session=NEW_SESSION_NAME&scan=true
 ```
 
-| Parameter | Type | Description |
-
+| Parameter | Type      | Description                            |
 | :-------- | :-------- | :------------------------------------- |
-
-| `session` | `string` | **Required**. Create Your Session Name |
-
-| `scan` | `boolean` | **Optional**. Print QR at Browser |
+| `session` | `string`  | **Required**. Create Your Session Name |
+| `scan`    | `boolean` | **Optional**. Print QR at Browser      |
 
 #### Send Text Message
 
 ```
-
-POST /send-message
-
+  POST /send-message
 ```
 
-| Body | Type | Description |
-
+| Body      | Type     | Description                                 |
 | :-------- | :------- | :------------------------------------------ |
-
 | `session` | `string` | **Required**. Session Name You Have Created |
-
-| `to` | `string` | **Required**. Receiver Phone Number |
-
-| `text` | `string` | **Required**. Text Message |
+| `to`      | `string` | **Required**. Receiver Phone Number         |
+| `text`    | `string` | **Required**. Text Message                  |
 
 #### Send Bulk Message
 
 ```
-
-POST /send-bulk-message
-
+  POST /send-bulk-message
 ```
 
-| Body | Type | Description |
-
+| Body      | Type     | Description                                                       |
 | :-------- | :------- | :---------------------------------------------------------------- |
-
-| `session` | `string` | **Required**. Session Name You Have Created |
-
-| `data` | `array` | **Required**. Array Of Object Message Data |
-
-| `delay` | `number` | **Optional**. Delay Per-message in Miliseconds, Default to 5000ms |
+| `session` | `string` | **Required**. Session Name You Have Created                       |
+| `data`    | `array`  | **Required**. Array Of Object Message Data                        |
+| `delay`   | `number` | **Optional**. Delay Per-message in Miliseconds, Default to 5000ms |
 
 #### Delete session
 
 ```
-
-GET /delete-session?session=SESSION_NAME
-
+  GET /delete-session?session=SESSION_NAME
 ```
 
-| Parameter | Type | Description |
-
+| Parameter | Type     | Description                            |
 | :-------- | :------- | :------------------------------------- |
-
 | `session` | `string` | **Required**. Create Your Session Name |
