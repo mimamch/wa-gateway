@@ -1,6 +1,6 @@
 {
   "name": "baileys",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js --ignore ./wa_credentials --ignore ./public",
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.8",
