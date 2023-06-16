@@ -16,7 +16,7 @@ To run this project, you will need to add the following environment variables to
 ```
 // .env
 
-PORT=5000 // which port to running on your machine
+PORT=5001 // which port to running on your machine
 ```
 
 ## Install and Running
@@ -45,10 +45,11 @@ Start the server
   npm run start
 ```
 
-| Parameter | Type      | Description                            |
-| :-------- | :-------- | :------------------------------------- |
-| `session` | `string`  | **Required**. Create Your Session Name |
-| `scan`    | `boolean` | Print QR at Browser                    |
+Open On Browser & Start New Session
+
+```bash
+  http://localhost:5000/start-session?session=mysession&scan=true
+```
 
 ## API Reference
 
