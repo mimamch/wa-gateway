@@ -1,6 +1,6 @@
-# Multi Session Whatsapp Gateway NodeJS
+# Headless Multi Session Whatsapp Gateway NodeJS
 
-A multi session Whatsapp Gateway with NodeJS
+Easy Setup Headless multi session Whatsapp Gateway with NodeJS
 
 - Support multi device
 - Support multi session / multi phone number
@@ -17,6 +17,7 @@ To run this project, you will need to add the following environment variables to
 // .env
 
 PORT=5001 // which port to running on your machine
+KEY=mysupersecretkey # For Securing Some Data
 ```
 
 ## Install and Running
@@ -97,3 +98,33 @@ Open On Browser & Start New Session
 | Parameter | Type     | Description                            |
 | :-------- | :------- | :------------------------------------- |
 | `session` | `string` | **Required**. Create Your Session Name |
+
+#### Get All Session ID
+
+```
+  GET /sessions?key=mysupersecretkey
+```
+
+| Parameter | Type     | Description                      |
+| :-------- | :------- | :------------------------------- |
+| `key`     | `string` | **Required**. Key on ".env" file |
+
+## Changelog
+
+V3.2.0
+
+- Add Get All Session ID
+- Add Key for secret data
+- Update README.md
+
+## Documentation
+
+For detailed documentation, including guides and API references, please visit the [official documentation](https://github.com/mimamch/wa-gateway).
+
+## Contributing
+
+Contributions are welcome! Please follow the guidelines outlined in the [CONTRIBUTING.md](https://github.com/mimamch/wa-gateway/blob/main/CONTRIBUTING.md) file.
+
+## License
+
+This library is licensed under the [MIT License](https://github.com/mimamch/wa-gateway/blob/main/LICENSE).
