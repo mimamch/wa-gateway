@@ -48,3 +48,17 @@ exports.deleteSession = async (req, res, next) => {
     next(error);
   }
 };
+exports.sessions = async (req, res, next) => {
+  try {
+    const key = req.body.key || req.query.key || req.headers.key;
+
+    // is KEY provided and secured
+    if (process.env.KEY && process.env.KEY != key) {
+      throw new ValidationError("Invalid Key");
+    }
+
+    res.status(200).json(responseSuccessWithData(whatsapp.getAllSession()));
+  } catch (error) {
+    next(error);
+  }
+};
