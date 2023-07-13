@@ -5,12 +5,16 @@ const {
   responseSuccessWithMessage,
   responseSuccessWithData,
 } = require("../../utils/response");
+const { sendWebhook } = require("../../utils/webhook");
+const { input } = require("../../utils/request");
 
 exports.createSession = async (req, res, next) => {
   try {
     const scan = req.query.scan;
     const sessionName =
       req.body.session || req.query.session || req.headers.session;
+    const webhookUrl = input(req, 'webhookUrl')
+    
     if (!sessionName) {
       throw new Error("Bad Request");
     }
@@ -28,6 +32,13 @@ exports.createSession = async (req, res, next) => {
         }
       }
     });
+
+    if( webhookUrl ) {
+      whatsapp.onConnected(session => {
+        sendWebhook(webhookUrl, {session: session, event: 'connected'})
+      })
+    }
+
     await whatsapp.startSession(sessionName, { printQR: true });
   } catch (error) {
     next(error);
@@ -37,10 +48,19 @@ exports.deleteSession = async (req, res, next) => {
   try {
     const sessionName =
       req.body.session || req.query.session || req.headers.session;
+    const webhookUrl = input(req, 'webhookUrl')
+
     if (!sessionName) {
       throw new ValidationError("session Required");
     }
     whatsapp.deleteSession(sessionName);
+
+    if(webhookUrl) {
+      whatsapp.onDisconnected(session => {
+        sendWebhook(webhookUrl, {session: session, event: 'disconnected'})
+      })
+    }
+    
     res
       .status(200)
       .json(responseSuccessWithMessage("Success Deleted " + sessionName));

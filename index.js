@@ -8,6 +8,7 @@ const path = require("path");
 const MainRouter = require("./app/routers");
 const errorHandlerMiddleware = require("./app/middlewares/error_middleware");
 const whatsapp = require("wa-multi-session");
+const { sendWebhook } = require("./utils/webhook");
 
 config();
 
@@ -35,10 +36,16 @@ server.listen(PORT);
 
 whatsapp.onConnected((session) => {
   console.log("connected => ", session);
+  if(process.env.WEBHOOK_URL) {
+    sendWebhook(process.env.WEBHOOK_URL, {session: session, event: 'connected'})
+  }
 });
 
 whatsapp.onDisconnected((session) => {
   console.log("disconnected => ", session);
+  if(process.env.WEBHOOK_URL) {
+    sendWebhook(process.env.WEBHOOK_URL, {session: session, event: 'disconnected'})
+  }
 });
 
 whatsapp.onConnecting((session) => {
