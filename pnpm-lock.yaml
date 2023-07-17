@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@mimamch/cmd':
+    specifier: ^1.0.0
+    version: 1.0.0
   cookie-parser:
     specifier: ~1.4.4
     version: 1.4.4
@@ -32,6 +35,9 @@ dependencies:
   morgan:
     specifier: ~1.9.1
     version: 1.9.1
+  openai:
+    specifier: ^3.3.0
+    version: 3.3.0(debug@2.6.9)
   qrcode:
     specifier: ^1.5.1
     version: 1.5.1
@@ -63,6 +69,10 @@ packages:
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
+    dev: false
+
+  /@mimamch/cmd@1.0.0:
+    resolution: {integrity: sha512-cxoLwVfgnK22XlJRyWg1BpUgebcrYwFoJaSTuLCvS2G+wQ1pkpYxz+Kb+JHcRS1xyqIFmuXzuiJNZUCTuZxwXg==, tarball: https://npm.pkg.github.com/download/@mimamch/cmd/1.0.0/f8ad4d4aa35874d3672e8ec107ed065203a41dbb}
     dev: false
 
   /@protobufjs/aspromise@1.1.2:
@@ -204,6 +214,14 @@ packages:
   /atomic-sleep@1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
+    dev: false
+
+  /axios@0.26.1(debug@2.6.9):
+    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
+    dependencies:
+      follow-redirects: 1.15.2(debug@2.6.9)
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /axios@1.4.0(debug@2.6.9):
@@ -889,6 +907,15 @@ packages:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
     dependencies:
       wrappy: 1.0.2
+    dev: false
+
+  /openai@3.3.0(debug@2.6.9):
+    resolution: {integrity: sha512-uqxI/Au+aPRnsaQRe8CojU0eCR7I0mBiKjD3sNMzY6DaC1ZVrc85u98mtJW6voDug8fgGN+DIZmTDxTthxb7dQ==}
+    dependencies:
+      axios: 0.26.1(debug@2.6.9)
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /p-limit@2.3.0:
