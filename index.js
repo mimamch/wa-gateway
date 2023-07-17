@@ -1,8 +1,8 @@
-const http = require("http");
 const { config } = require("dotenv");
+config();
+const http = require("http");
 const app = require("./app");
 const { initPlugin } = require("./utils/plugin");
-config();
 
 initPlugin(require("./plugins/chat-gpt"));
 
