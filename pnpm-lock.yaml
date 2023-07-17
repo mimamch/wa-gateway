@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@mimamch/cmd':
-    specifier: ^1.0.0
-    version: 1.0.0
+    specifier: ^1.0.6
+    version: 1.0.6
   cookie-parser:
     specifier: ~1.4.4
     version: 1.4.4
@@ -71,8 +71,8 @@ packages:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
     dev: false
 
-  /@mimamch/cmd@1.0.0:
-    resolution: {integrity: sha512-cxoLwVfgnK22XlJRyWg1BpUgebcrYwFoJaSTuLCvS2G+wQ1pkpYxz+Kb+JHcRS1xyqIFmuXzuiJNZUCTuZxwXg==, tarball: https://npm.pkg.github.com/download/@mimamch/cmd/1.0.0/f8ad4d4aa35874d3672e8ec107ed065203a41dbb}
+  /@mimamch/cmd@1.0.6:
+    resolution: {integrity: sha512-yxHl82lPb6A15dds+FRih86mRaMWrSRwlL3WFJiFd2hesSGWIA7HfyeVIT4AxHua/gCWjdBbTPxlTllGGRNJaA==}
     dev: false
 
   /@protobufjs/aspromise@1.1.2:
