@@ -1,0 +1,24 @@
+{
+  "name": "chat-gpt",
+  "version": "1.0.0",
+  "description": "chat gpt plugin for wa gateway",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsup src/index.ts --watch --sourcemap inline --onSuccess \"node dist/index.js\"",
+    "build": "tsup src/index.ts --sourcemap inline",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mimamch/cmd": "^1.1.0",
+    "express": "^4.18.2",
+    "openai": "^3.3.0",
+    "wa-multi-session": "^3.1.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "tsup": "^7.1.0"
+  }
+}
