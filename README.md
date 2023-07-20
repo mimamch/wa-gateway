@@ -51,6 +51,8 @@ Start with PM2 ~ Tested with Ubuntu 20 server
 ```bash
 # example of PATH_PM2 is /www/server/nodejs/v18.13.0/bin/pm2
 sudo PATH_PM2 start ecosystem.config.js
+
+* FORK or CLUSTER ? -> readmore [here](https://stackoverflow.com/a/36177256)
 ```
 
 Open On Browser & Start New Session
