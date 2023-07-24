@@ -36,8 +36,8 @@ dependencies:
     specifier: ^1.5.1
     version: 1.5.1
   wa-multi-session:
-    specifier: ^3.0.1
-    version: 3.0.1(debug@2.6.9)
+    specifier: ^3.2.1
+    version: 3.2.1(debug@2.6.9)
 
 packages:
 
@@ -780,6 +780,12 @@ packages:
     hasBin: true
     dev: false
 
+  /mime@3.0.0:
+    resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    dev: false
+
   /minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
@@ -1338,12 +1344,13 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /wa-multi-session@3.0.1(debug@2.6.9):
-    resolution: {integrity: sha512-XGazURLPCmORrm8kuXZvLdmorMlSIg5XbgOlTT+J9Zb5HIYOScylbEqu/It0eoRTwT3Yepkonub4eIM4A7Hf6A==}
+  /wa-multi-session@3.2.1(debug@2.6.9):
+    resolution: {integrity: sha512-nRSqfwrWQcOJ02vrBSFXmQ7N+4QIfetVxKA9C7cD8UjFbM1Fuif0Ms04C2JYXlkkJyPN032YMPhx0nOnx2LLng==}
     dependencies:
       '@adiwajshing/keyed-db': 0.2.4
       '@hapi/boom': 10.0.1
       '@whiskeysockets/baileys': 6.3.1(debug@2.6.9)(qrcode-terminal@0.12.0)
+      mime: 3.0.0
       pino: 8.14.1
       qrcode-terminal: 0.12.0
     transitivePeerDependencies:
