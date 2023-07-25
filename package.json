@@ -1,6 +1,6 @@
 {
-  "name": "baileys",
-  "version": "3.2.0",
+  "name": "wa-gateway",
+  "version": "3.2.1",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js --ignore ./wa_credentials --ignore ./public",
@@ -22,7 +22,7 @@
     "moment": "^2.29.4",
     "morgan": "~1.9.1",
     "qrcode": "^1.5.1",
-    "wa-multi-session": "^3.0.1"
+    "wa-multi-session": "^3.2.1"
   },
   "repository": {
     "type": "git",
