@@ -26,8 +26,8 @@ jobs:
         with:
           context: .
           load: true
-          tags: samirfor/wagateway:$(date +%s)
+          tags: samirfor/wagateway:latest
       -
         name: Inspect
         run: |
-          docker image inspect samirfor/wagateway:$(date +%s)
+          docker image inspect samirfor/wagateway:latest
