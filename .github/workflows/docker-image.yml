@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    # https://docs.docker.com/build/ci/github-actions/export-docker/
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true
+          tags: wagateway:$(date +%s)
+      -
+        name: Inspect
+        run: |
+          docker image inspect wagateway:$(date +%s)
