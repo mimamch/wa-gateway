@@ -36,8 +36,8 @@ dependencies:
     specifier: ^1.5.1
     version: 1.5.1
   wa-multi-session:
-    specifier: ^3.2.1
-    version: 3.2.1(debug@2.6.9)
+    specifier: ^3.3.1
+    version: 3.3.1(debug@2.6.9)
 
 packages:
 
@@ -1344,8 +1344,8 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /wa-multi-session@3.2.1(debug@2.6.9):
-    resolution: {integrity: sha512-nRSqfwrWQcOJ02vrBSFXmQ7N+4QIfetVxKA9C7cD8UjFbM1Fuif0Ms04C2JYXlkkJyPN032YMPhx0nOnx2LLng==}
+  /wa-multi-session@3.3.1(debug@2.6.9):
+    resolution: {integrity: sha512-CdYfW+rebYrPPa97yenfqJadnz3E5shIlWUcJhVzgm1HWBhyryMj/1MJErKkRNxi67LxoR/XwPOX9xU4X9dSUA==}
     dependencies:
       '@adiwajshing/keyed-db': 0.2.4
       '@hapi/boom': 10.0.1
