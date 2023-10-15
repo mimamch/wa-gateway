@@ -12,6 +12,9 @@ exports.sendMessage = async (req, res, next) => {
 
     if (!to || !text) throw new ValidationError("Missing Parameters");
 
+    if (to.startsWith("08")) {
+      to = "628" + to.substring(2);
+    }
     const receiver = to;
     if (!sessionId) throw new ValidationError("Session Not Founds");
     const send = await whatsapp.sendTextMessage({
