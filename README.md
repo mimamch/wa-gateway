@@ -71,11 +71,11 @@ Open On Browser & Start New Session
   POST /send-message
 ```
 
-| Body      | Type     | Description                                                              |
-| :-------- | :------- | :----------------------------------------------------------------------- |
-| `session` | `string` | **Required**. Session Name You Have Created                              |
-| `to`      | `string` | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
-| `text`    | `string` | **Required**. Text Message                                               |
+| Body      | Type     | Description                                                                           |
+| :-------- | :------- | :------------------------------------------------------------------------------------ |
+| `session` | `string` | **Required**. Session Name You Have Created                                           |
+| `to`      | `string` | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678 / 0812345678) |
+| `text`    | `string` | **Required**. Text Message                                                            |
 
 #### Send Bulk Message
 

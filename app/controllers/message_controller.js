@@ -13,6 +13,7 @@ exports.sendMessage = async (req, res, next) => {
     if (!to || !text) throw new ValidationError("Missing Parameters");
 
     if (to.startsWith("08")) {
+      //Fix Number 08 To 62
       to = "628" + to.substring(2);
     }
     const receiver = to;
