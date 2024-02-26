@@ -117,6 +117,12 @@ V3.2.0
 - Add Key for secret data
 - Update README.md
 
+## Upgrading
+
+```
+npm install wa-multi-session@latest
+```
+
 ## Documentation
 
 For detailed documentation, including guides and API references, please visit the [official documentation](https://github.com/mimamch/wa-gateway).
