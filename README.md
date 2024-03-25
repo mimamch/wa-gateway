@@ -46,6 +46,15 @@ Start the server
   npm run start
 ```
 
+Or Start as Background Process with PM2: Process Manager (For Production) ~ Tested with Ubuntu 20 server
+
+```bash
+# example of PATH_PM2 is /www/server/nodejs/v18.13.0/bin/pm2 or you can use pm2 instance
+sudo PATH_PM2 start ecosystem.config.js
+
+* FORK or CLUSTER ? -> readmore [here](https://stackoverflow.com/a/36177256)
+```
+
 Open On Browser & Start New Session
 
 ```bash
