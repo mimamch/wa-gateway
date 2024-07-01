@@ -1,6 +1,6 @@
 {
   "name": "wa-gateway",
-  "version": "3.2.2",
+  "version": "3.5.0",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js --ignore ./wa_credentials --ignore ./public",
