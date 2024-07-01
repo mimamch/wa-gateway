@@ -22,7 +22,7 @@
     "moment": "^2.29.4",
     "morgan": "~1.9.1",
     "qrcode": "^1.5.1",
-    "wa-multi-session": "^3.4.0"
+    "wa-multi-session": "^3.5.0"
   },
   "repository": {
     "type": "git",
