@@ -36,8 +36,8 @@ dependencies:
     specifier: ^1.5.1
     version: 1.5.1
   wa-multi-session:
-    specifier: ^3.4.0
-    version: 3.4.0(debug@2.6.9)
+    specifier: ^3.5.0
+    version: 3.5.0(debug@2.6.9)
 
 packages:
 
@@ -167,8 +167,8 @@ packages:
       codec-parser: 2.4.3
     dev: false
 
-  /@whiskeysockets/baileys@6.6.0(debug@2.6.9)(qrcode-terminal@0.12.0):
-    resolution: {integrity: sha512-4aIPHztdLZP24Qac7mudZTMR7qIsEDQxlpCBJE4atYHFAa5tlwCGPcUy249q3aaayxYtQAwheVG42L6AkRxAwg==}
+  /@whiskeysockets/baileys@6.7.5(debug@2.6.9)(qrcode-terminal@0.12.0):
+    resolution: {integrity: sha512-5kDwir6wT1BY0aIdsJXDAHoq7Gy3oYwRXj3qFoS6MOC0udzF4e2D4vTbA/LVLg7a54dtDxXj+iEnrWcaE9jQZA==}
     peerDependencies:
       jimp: ^0.16.1
       link-preview-js: ^3.0.0
@@ -186,6 +186,7 @@ packages:
     dependencies:
       '@adiwajshing/keyed-db': 0.2.4
       '@hapi/boom': 9.1.4
+      async-lock: 1.4.1
       audio-decode: 2.2.0
       axios: 1.4.0(debug@2.6.9)
       cache-manager: 4.0.1
@@ -197,7 +198,7 @@ packages:
       pino: 7.11.0
       protobufjs: 7.2.6
       qrcode-terminal: 0.12.0
-      uuid: 9.0.0
+      uuid: 10.0.0
       ws: 8.13.0
     transitivePeerDependencies:
       - bufferutil
@@ -235,6 +236,10 @@ packages:
 
   /array-flatten@1.1.1:
     resolution: {integrity: sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==}
+    dev: false
+
+  /async-lock@1.4.1:
+    resolution: {integrity: sha512-Az2ZTpuytrtqENulXwO3GGv1Bztugx6TT37NIo7imr/Qo0gsYiGtSdBa2B6fsXhTpVZDNfu1Qn3pk531e3q+nQ==}
     dev: false
 
   /async@3.2.3:
@@ -1447,8 +1452,8 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: false
 
-  /uuid@9.0.0:
-    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+  /uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
     hasBin: true
     dev: false
 
@@ -1457,12 +1462,12 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /wa-multi-session@3.4.0(debug@2.6.9):
-    resolution: {integrity: sha512-KmMnKWasrwg4lx/O1tu61NIv0xx0XL2zCPHoG7F2vOFf0w1E5vDz66vyMqT+J7c95cK0oebARWXmVhhj6CvViA==}
+  /wa-multi-session@3.5.0(debug@2.6.9):
+    resolution: {integrity: sha512-zoLj0j55KKrGxesNmnMnc2Uk9bYoNvGhD6J8KCZKwt/1LSVWxMn+FkaAtIpdArL5/FGa1AyQrrV+y4o12kldDQ==}
     dependencies:
       '@adiwajshing/keyed-db': 0.2.4
       '@hapi/boom': 10.0.1
-      '@whiskeysockets/baileys': 6.6.0(debug@2.6.9)(qrcode-terminal@0.12.0)
+      '@whiskeysockets/baileys': 6.7.5(debug@2.6.9)(qrcode-terminal@0.12.0)
       mime: 3.0.0
       pino: 8.14.1
       qrcode-terminal: 0.12.0
