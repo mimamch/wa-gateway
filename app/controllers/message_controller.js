@@ -33,6 +33,39 @@ exports.sendMessage = async (req, res, next) => {
     next(error);
   }
 };
+exports.sendImageMessage = async (req, res, next) => {
+  try {
+    let to = req.body.to || req.query.to;
+    let caption = req.body.caption || req.query.caption;
+    let urlImage = req.body.urlImage || req.query.urlImage;
+    const sessionId =
+      req.body.session || req.query.session || req.headers.session;
+
+    if (!to || !urlImage) throw new ValidationError("Missing Parameters");
+
+    const receiver = to;
+    if (!sessionId) throw new ValidationError("Session Not Founds");
+    const send = await whatsapp.sendImage({
+      sessionId,
+      to: receiver,
+      media : urlImage,
+      text: caption,
+    });
+
+    res.status(200).json(
+      responseSuccessWithData({
+        id: send?.key?.id,
+        status: send?.status,
+        message: send?.message?.extendedTextMessage?.text || "Not Text",
+        remoteJid: send?.key?.remoteJid,
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 exports.sendBulkMessage = async (req, res, next) => {
   try {
     const sessionId =
