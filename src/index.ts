@@ -9,6 +9,7 @@ import { env } from "./env";
 import { createSessionController } from "./controllers/session";
 import * as whastapp from "wa-multi-session";
 import { createMessageController } from "./controllers/message";
+import { createKeyMiddleware } from "./middlewares/key.middleware";
 
 const app = new Hono();
 
@@ -18,6 +19,7 @@ app.use(
   })
 );
 app.use(cors());
+app.use("*", createKeyMiddleware());
 
 app.onError(globalErrorMiddleware);
 app.notFound(notFoundMiddleware);

@@ -1,0 +1,11 @@
+services:
+  whatsapp-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: whatsapp-gateway
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+    restart: always

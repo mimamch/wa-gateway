@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { customValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
 import * as whatsapp from "wa-multi-session";
@@ -16,7 +15,6 @@ export const createMessageController = () => {
 
   app.post(
     "/send-text",
-    createKeyMiddleware(),
     customValidator("json", sendMessageSchema),
     async (c) => {
       const payload = c.req.valid("json");
@@ -41,7 +39,6 @@ export const createMessageController = () => {
 
   app.get(
     "/send-text",
-    createKeyMiddleware(),
     customValidator("query", sendMessageSchema),
     async (c) => {
       const payload = c.req.valid("query");
@@ -66,7 +63,6 @@ export const createMessageController = () => {
 
   app.post(
     "/send-image",
-    createKeyMiddleware(),
     customValidator(
       "json",
       sendMessageSchema.merge(
@@ -96,9 +92,9 @@ export const createMessageController = () => {
       });
     }
   );
+
   app.post(
     "/send-document",
-    createKeyMiddleware(),
     customValidator(
       "json",
       sendMessageSchema.merge(

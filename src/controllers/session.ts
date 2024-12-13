@@ -2,14 +2,13 @@ import * as whatsapp from "wa-multi-session";
 import { Hono } from "hono";
 import { customValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
-import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
 import { HTTPException } from "hono/http-exception";
 
 export const createSessionController = () => {
   const app = new Hono();
 
-  app.get("/", createKeyMiddleware(), async (c) => {
+  app.get("/", async (c) => {
     return c.json({
       data: whatsapp.getAllSession(),
     });
@@ -21,7 +20,6 @@ export const createSessionController = () => {
 
   app.post(
     "/start",
-    createKeyMiddleware(),
     customValidator("json", startSessionSchema),
     async (c) => {
       const payload = c.req.valid("json");
@@ -59,7 +57,6 @@ export const createSessionController = () => {
   );
   app.get(
     "/start",
-    createKeyMiddleware(),
     customValidator("query", startSessionSchema),
     async (c) => {
       const payload = c.req.valid("query");
@@ -103,7 +100,7 @@ export const createSessionController = () => {
     }
   );
 
-  app.all("/logout", createKeyMiddleware(), async (c) => {
+  app.all("/logout", async (c) => {
     await whatsapp.deleteSession(
       c.req.query().session || (await c.req.json()).session || ""
     );
