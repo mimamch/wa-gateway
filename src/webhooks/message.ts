@@ -1,6 +1,5 @@
 import { MessageReceived } from "wa-multi-session";
-import { CreateWebhookProps } from ".";
-import axios from "axios";
+import { CreateWebhookProps, webhookClient } from ".";
 
 type WebhookMessageBody = {
   session: string;
@@ -29,6 +28,5 @@ export const createWebhookMessage =
         message.message?.liveLocationMessage?.caption ||
         null,
     } satisfies WebhookMessageBody;
-    console.log(body);
-    axios.post(endpoint, body).catch(console.error);
+    webhookClient.post(endpoint, body).catch(console.error);
   };
