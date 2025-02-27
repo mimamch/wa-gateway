@@ -27,6 +27,12 @@ export const createMessageController = () => {
         });
       }
 
+      await whatsapp.sendTyping({
+        sessionId: payload.session,
+        to: payload.to,
+        duration: Math.min(5000, payload.text.length * 50),
+      });
+
       const response = await whatsapp.sendTextMessage({
         sessionId: payload.session,
         to: payload.to,
@@ -84,6 +90,12 @@ export const createMessageController = () => {
         });
       }
 
+      await whatsapp.sendTyping({
+        sessionId: payload.session,
+        to: payload.to,
+        duration: Math.min(5000, payload.text.length * 50),
+      });
+
       const response = await whatsapp.sendImage({
         sessionId: payload.session,
         to: payload.to,
@@ -117,12 +129,50 @@ export const createMessageController = () => {
         });
       }
 
+      await whatsapp.sendTyping({
+        sessionId: payload.session,
+        to: payload.to,
+        duration: Math.min(5000, payload.text.length * 50),
+      });
+
       const response = await whatsapp.sendDocument({
         sessionId: payload.session,
         to: payload.to,
         text: payload.text,
         media: payload.document_url,
         filename: payload.document_name,
+      });
+
+      return c.json({
+        data: response,
+      });
+    }
+  );
+
+  app.post(
+    "/send-sticker",
+    createKeyMiddleware(),
+    customValidator(
+      "json",
+      sendMessageSchema.merge(
+        z.object({
+          image_url: z.string(),
+        })
+      )
+    ),
+    async (c) => {
+      const payload = c.req.valid("json");
+      const isExist = whatsapp.getSession(payload.session);
+      if (!isExist) {
+        throw new HTTPException(400, {
+          message: "Session does not exist",
+        });
+      }
+
+      const response = await whatsapp.sendSticker({
+        sessionId: payload.session,
+        to: payload.to,
+        media: payload.image_url,
       });
 
       return c.json({

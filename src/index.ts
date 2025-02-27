@@ -9,6 +9,9 @@ import { env } from "./env";
 import { createSessionController } from "./controllers/session";
 import * as whastapp from "wa-multi-session";
 import { createMessageController } from "./controllers/message";
+import { CreateWebhookProps } from "./webhooks";
+import { createWebhookMessage } from "./webhooks/message";
+import { createWebhookSession } from "./webhooks/session";
 
 const app = new Hono();
 
@@ -46,5 +49,32 @@ serve(
 whastapp.onConnected((session) => {
   console.log(`session: '${session}' connected`);
 });
+
+// Implement Webhook
+if (env.WEBHOOK_BASE_URL) {
+  const webhookProps: CreateWebhookProps = {
+    baseUrl: env.WEBHOOK_BASE_URL,
+  };
+
+  // message webhook
+  whastapp.onMessageReceived(createWebhookMessage(webhookProps));
+
+  // session webhook
+  const webhookSession = createWebhookSession(webhookProps);
+
+  whastapp.onConnected((session) => {
+    console.log(`session: '${session}' connected`);
+    webhookSession({ session, status: "connected" });
+  });
+  whastapp.onConnecting((session) => {
+    console.log(`session: '${session}' connecting`);
+    webhookSession({ session, status: "connecting" });
+  });
+  whastapp.onDisconnected((session) => {
+    console.log(`session: '${session}' disconnected`);
+    webhookSession({ session, status: "disconnected" });
+  });
+}
+// End Implement Webhook
 
 whastapp.loadSessionsFromStorage();
