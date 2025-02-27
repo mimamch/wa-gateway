@@ -54,8 +54,8 @@ importers:
         specifier: ^4.19.2
         version: 4.19.2
       wa-multi-session:
-        specifier: ^3.7.2
-        version: 3.7.2(debug@2.6.9)(eslint@8.57.1)(typescript@5.7.2)
+        specifier: ^3.7.3
+        version: 3.7.3(debug@2.6.9)(eslint@8.57.1)(typescript@5.7.2)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -1488,8 +1488,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  wa-multi-session@3.7.2:
-    resolution: {integrity: sha512-J3RI65YMg9El+aAPa6w22HdNp3p5ypuGw0hZIzKmxaBRRLVGFN6BHnvAyXR27k4mX7F2S5PUyjV+k/vXsJe1JQ==}
+  wa-multi-session@3.7.3:
+    resolution: {integrity: sha512-MdgCdeD9Pca8PbBoZSkrYQaqBf6DHkPvCr2WXJNFYCGJAh69S5AJs/ktzYZQHVwRzY/Jqzw2vtu5ok6k4VN0bQ==}
 
   which-module@2.0.1:
     resolution: {integrity: sha512-iBdZ57RDvnOR9AGBhML2vFZf7h8vmBjhoaZqODJBFWHVtKkDmKuHai3cx5PgVMrX5YDNp27AofYbAwctSS+vhQ==}
@@ -2970,7 +2970,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  wa-multi-session@3.7.2(debug@2.6.9)(eslint@8.57.1)(typescript@5.7.2):
+  wa-multi-session@3.7.3(debug@2.6.9)(eslint@8.57.1)(typescript@5.7.2):
     dependencies:
       '@adiwajshing/keyed-db': 0.2.4
       '@hapi/boom': 10.0.1
