@@ -149,5 +149,37 @@ export const createMessageController = () => {
     }
   );
 
+  app.post(
+    "/send-sticker",
+    createKeyMiddleware(),
+    customValidator(
+      "json",
+      sendMessageSchema.merge(
+        z.object({
+          image_url: z.string(),
+        })
+      )
+    ),
+    async (c) => {
+      const payload = c.req.valid("json");
+      const isExist = whatsapp.getSession(payload.session);
+      if (!isExist) {
+        throw new HTTPException(400, {
+          message: "Session does not exist",
+        });
+      }
+
+      const response = await whatsapp.sendSticker({
+        sessionId: payload.session,
+        to: payload.to,
+        media: payload.image_url,
+      });
+
+      return c.json({
+        data: response,
+      });
+    }
+  );
+
   return app;
 };
