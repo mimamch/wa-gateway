@@ -9,6 +9,8 @@ import { env } from "./env";
 import { createSessionController } from "./controllers/session";
 import * as whastapp from "wa-multi-session";
 import { createMessageController } from "./controllers/message";
+import { CreateWebhookProps } from "./webhooks";
+import { createWebhookMessage } from "./webhooks/message";
 
 const app = new Hono();
 
@@ -46,5 +48,14 @@ serve(
 whastapp.onConnected((session) => {
   console.log(`session: '${session}' connected`);
 });
+
+// Implement Webhook
+if (env.WEBHOOK_BASE_URL) {
+  const webhookProps: CreateWebhookProps = {
+    baseUrl: env.WEBHOOK_BASE_URL,
+  };
+  whastapp.onMessageReceived(createWebhookMessage(webhookProps));
+}
+// End Implement Webhook
 
 whastapp.loadSessionsFromStorage();
