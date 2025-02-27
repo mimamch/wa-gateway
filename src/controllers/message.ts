@@ -27,6 +27,12 @@ export const createMessageController = () => {
         });
       }
 
+      await whatsapp.sendTyping({
+        sessionId: payload.session,
+        to: payload.to,
+        duration: Math.min(5000, payload.text.length * 50),
+      });
+
       const response = await whatsapp.sendTextMessage({
         sessionId: payload.session,
         to: payload.to,
@@ -84,6 +90,12 @@ export const createMessageController = () => {
         });
       }
 
+      await whatsapp.sendTyping({
+        sessionId: payload.session,
+        to: payload.to,
+        duration: Math.min(5000, payload.text.length * 50),
+      });
+
       const response = await whatsapp.sendImage({
         sessionId: payload.session,
         to: payload.to,
@@ -116,6 +128,12 @@ export const createMessageController = () => {
           message: "Session does not exist",
         });
       }
+
+      await whatsapp.sendTyping({
+        sessionId: payload.session,
+        to: payload.to,
+        duration: Math.min(5000, payload.text.length * 50),
+      });
 
       const response = await whatsapp.sendDocument({
         sessionId: payload.session,
