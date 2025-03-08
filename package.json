@@ -1,6 +1,6 @@
 {
   "name": "wa-gateway",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts"
@@ -26,7 +26,7 @@
     "morgan": "~1.9.1",
     "qrcode": "^1.5.1",
     "tsx": "^4.19.2",
-    "wa-multi-session": "^3.7.3",
+    "wa-multi-session": "^3.7.5",
     "zod": "^3.23.8"
   },
   "repository": {

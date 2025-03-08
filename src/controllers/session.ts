@@ -1,6 +1,6 @@
 import * as whatsapp from "wa-multi-session";
 import { Hono } from "hono";
-import { customValidator } from "../middlewares/validation.middleware";
+import { requestValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
@@ -22,7 +22,7 @@ export const createSessionController = () => {
   app.post(
     "/start",
     createKeyMiddleware(),
-    customValidator("json", startSessionSchema),
+    requestValidator("json", startSessionSchema),
     async (c) => {
       const payload = c.req.valid("json");
 
@@ -60,7 +60,7 @@ export const createSessionController = () => {
   app.get(
     "/start",
     createKeyMiddleware(),
-    customValidator("query", startSessionSchema),
+    requestValidator("query", startSessionSchema),
     async (c) => {
       const payload = c.req.valid("query");
 

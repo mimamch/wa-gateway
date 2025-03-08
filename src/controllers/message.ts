@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
-import { customValidator } from "../middlewares/validation.middleware";
+import { requestValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
 import * as whatsapp from "wa-multi-session";
 import { HTTPException } from "hono/http-exception";
@@ -17,7 +17,7 @@ export const createMessageController = () => {
   app.post(
     "/send-text",
     createKeyMiddleware(),
-    customValidator("json", sendMessageSchema),
+    requestValidator("json", sendMessageSchema),
     async (c) => {
       const payload = c.req.valid("json");
       const isExist = whatsapp.getSession(payload.session);
@@ -48,7 +48,7 @@ export const createMessageController = () => {
   app.get(
     "/send-text",
     createKeyMiddleware(),
-    customValidator("query", sendMessageSchema),
+    requestValidator("query", sendMessageSchema),
     async (c) => {
       const payload = c.req.valid("query");
       const isExist = whatsapp.getSession(payload.session);
@@ -73,7 +73,7 @@ export const createMessageController = () => {
   app.post(
     "/send-image",
     createKeyMiddleware(),
-    customValidator(
+    requestValidator(
       "json",
       sendMessageSchema.merge(
         z.object({
@@ -111,7 +111,7 @@ export const createMessageController = () => {
   app.post(
     "/send-document",
     createKeyMiddleware(),
-    customValidator(
+    requestValidator(
       "json",
       sendMessageSchema.merge(
         z.object({
@@ -152,7 +152,7 @@ export const createMessageController = () => {
   app.post(
     "/send-sticker",
     createKeyMiddleware(),
-    customValidator(
+    requestValidator(
       "json",
       sendMessageSchema.merge(
         z.object({
