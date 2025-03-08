@@ -15,8 +15,8 @@ importers:
         specifier: ^0.4.1
         version: 0.4.1(hono@4.6.13)(zod@3.23.8)
       axios:
-        specifier: ^1.8.1
-        version: 1.8.1(debug@2.6.9)
+        specifier: ^1.8.2
+        version: 1.8.2(debug@2.6.9)
       cookie-parser:
         specifier: ~1.4.4
         version: 1.4.4
@@ -498,8 +498,8 @@ packages:
     resolution: {integrity: sha512-En9AY6EG1qYqEy5L/quryzbA4akBpJrnBZNxeKTqGHC2xT9Qc4aZ8b7CcbOMFTTc/MGdoNyp+SN4zInZNKxMYA==}
     engines: {node: '>=14'}
 
-  axios@1.8.1:
-    resolution: {integrity: sha512-NN+fvwH/kV01dYUQ3PTOZns4LWtWhOFCAhQ/pHb88WQ1hNe5V/dvFwc4VJcDL11LT9xSX0QtsR8sWUuyOuOq7g==}
+  axios@1.8.2:
+    resolution: {integrity: sha512-ls4GYBm5aig9vWx8AWDSGLpnpDQRtWAfrjU+EuytuODrFBkqesN2RkOQCBzrA1RQNHw1SmRMSDDDSwzNAYQ6Rg==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1838,7 +1838,7 @@ snapshots:
       '@whiskeysockets/eslint-config': https://codeload.github.com/whiskeysockets/eslint-config/tar.gz/326b55f2842668f4e11f471451c4e39819a0e1bf(eslint@8.57.1)(typescript@5.7.2)
       async-lock: 1.4.1
       audio-decode: 2.2.0
-      axios: 1.8.1(debug@2.6.9)
+      axios: 1.8.2(debug@2.6.9)
       cache-manager: 5.7.6
       futoin-hkdf: 1.5.2
       libphonenumber-js: 1.10.37
@@ -1928,7 +1928,7 @@ snapshots:
 
   audio-type@2.2.1: {}
 
-  axios@1.8.1(debug@2.6.9):
+  axios@1.8.2(debug@2.6.9):
     dependencies:
       follow-redirects: 1.15.9(debug@2.6.9)
       form-data: 4.0.0

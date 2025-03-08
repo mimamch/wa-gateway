@@ -1,6 +1,6 @@
 {
   "name": "wa-gateway",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts"
@@ -13,7 +13,7 @@
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "@hono/zod-validator": "^0.4.1",
-    "axios": "^1.8.1",
+    "axios": "^1.8.2",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
