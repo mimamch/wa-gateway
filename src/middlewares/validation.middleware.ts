@@ -23,7 +23,7 @@ type Hook<T, E extends Env, P extends string, O = {}> = (
 
 type HasUndefined<T> = undefined extends T ? true : false;
 
-export const customValidator = <
+export const requestValidator = <
   T extends ZodSchema,
   Target extends keyof ValidationTargets,
   E extends Env,

@@ -12,6 +12,7 @@ import { createMessageController } from "./controllers/message";
 import { CreateWebhookProps } from "./webhooks";
 import { createWebhookMessage } from "./webhooks/message";
 import { createWebhookSession } from "./webhooks/session";
+import { createProfileController } from "./controllers/profile";
 
 const app = new Hono();
 
@@ -33,6 +34,10 @@ app.route("/session", createSessionController());
  * message routes
  */
 app.route("/message", createMessageController());
+/**
+ * profile routes
+ */
+app.route("/profile", createProfileController());
 
 const port = env.PORT;
 
