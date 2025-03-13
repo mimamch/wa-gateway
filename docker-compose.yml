@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  # aplikasi nodejs wa gateway
+  gateway2:
+    container_name: stie-wa-gateway2
+    image: ghcr.io/mfth12/wa-gateway2-stie:latest
+    environment:
+      - PORT=${PORT}
+      - KEY=${KEY}
+    volumes:
+      - ./wa_credentials:/wa_credentials # Pastikan folder ini di host sudah ada dan memiliki izin akses yang benar
+    ports:
+      - 8180:8180
+    networks:
+      - wa-gateway
+    restart: always
+
+#setup jaringan
+networks:
+  wa-gateway:
+    driver: bridge
