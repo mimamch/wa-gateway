@@ -30,7 +30,7 @@ export const createMessageController = () => {
       await whatsapp.sendTyping({
         sessionId: payload.session,
         to: payload.to,
-        duration: Math.min(5000, payload.text.length * 50),
+        duration: Math.min(5000, payload.text.length * 100),
       });
 
       const response = await whatsapp.sendTextMessage({
@@ -93,7 +93,7 @@ export const createMessageController = () => {
       await whatsapp.sendTyping({
         sessionId: payload.session,
         to: payload.to,
-        duration: Math.min(5000, payload.text.length * 50),
+        duration: Math.min(5000, payload.text.length * 100),
       });
 
       const response = await whatsapp.sendImage({
@@ -132,7 +132,7 @@ export const createMessageController = () => {
       await whatsapp.sendTyping({
         sessionId: payload.session,
         to: payload.to,
-        duration: Math.min(5000, payload.text.length * 50),
+        duration: Math.min(5000, payload.text.length * 100),
       });
 
       const response = await whatsapp.sendDocument({
