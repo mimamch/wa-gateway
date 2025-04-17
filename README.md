@@ -161,7 +161,7 @@ POST http://yourdomain.com/webhook/session
 
 Example body:
 
-```json
+```js
 {
   "session": "mysession",
   "status": "connected" //  "disconnected" | "connecting"
@@ -178,7 +178,7 @@ POST http://yourdomain.com/webhook/message
 
 Example body:
 
-```json
+```js
 {
   "session": "mysession",
   "from": "xxx@s.whatsapp.net",
