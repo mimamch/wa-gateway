@@ -72,11 +72,12 @@ http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=H
   POST /message/send-text
 ```
 
-| Body      | Type     | Description                                                              |
-| :-------- | :------- | :----------------------------------------------------------------------- |
-| `session` | `string` | **Required**. Session Name You Have Created                              |
-| `to`      | `string` | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
-| `text`    | `string` | **Required**. Text Message                                               |
+| Body       | Type      | Description                                                              |
+| :--------- | :-------- | :----------------------------------------------------------------------- |
+| `session`  | `string`  | **Required**. Session Name You Have Created                              |
+| `to`       | `string`  | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
+| `text`     | `string`  | **Required**. Text Message                                               |
+| `is_group` | `boolean` | **Optional**. True if "to" field is group ids                            |
 
 #### Send Image
 
@@ -84,12 +85,13 @@ http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=H
   POST /message/send-image
 ```
 
-| Body        | Type     | Description                                                              |
-| :---------- | :------- | :----------------------------------------------------------------------- |
-| `session`   | `string` | **Required**. Session Name You Have Created                              |
-| `to`        | `string` | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
-| `text`      | `string` | **Required**. Caption Massage                                            |
-| `image_url` | `string` | **Required**. URL Image                                                  |
+| Body        | Type      | Description                                                              |
+| :---------- | :-------- | :----------------------------------------------------------------------- |
+| `session`   | `string`  | **Required**. Session Name You Have Created                              |
+| `to`        | `string`  | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
+| `text`      | `string`  | **Required**. Caption Massage                                            |
+| `image_url` | `string`  | **Required**. URL Image                                                  |
+| `is_group`  | `boolean` | **Optional**. True if "to" field is group ids                            |
 
 #### Send Document
 
@@ -97,13 +99,14 @@ http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=H
   POST /message/send-document
 ```
 
-| Body            | Type     | Description                                                              |
-| :-------------- | :------- | :----------------------------------------------------------------------- |
-| `session`       | `string` | **Required**. Session Name You Have Created                              |
-| `to`            | `string` | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
-| `text`          | `string` | **Required**. Caption Massage                                            |
-| `document_url`  | `string` | **Required**. Document URL                                               |
-| `document_name` | `string` | **Required**. Document Name                                              |
+| Body            | Type      | Description                                                              |
+| :-------------- | :-------- | :----------------------------------------------------------------------- |
+| `session`       | `string`  | **Required**. Session Name You Have Created                              |
+| `to`            | `string`  | **Required**. Receiver Phone Number with Country Code (e.g: 62812345678) |
+| `text`          | `string`  | **Required**. Caption Massage                                            |
+| `document_url`  | `string`  | **Required**. Document URL                                               |
+| `document_name` | `string`  | **Required**. Document Name                                              |
+| `is_group`      | `boolean` | **Optional**. True if "to" field is group ids                            |
 
 #### Delete session
 
@@ -161,7 +164,7 @@ POST http://yourdomain.com/webhook/session
 
 Example body:
 
-```json
+```js
 {
   "session": "mysession",
   "status": "connected" //  "disconnected" | "connecting"
@@ -178,7 +181,7 @@ POST http://yourdomain.com/webhook/message
 
 Example body:
 
-```json
+```js
 {
   "session": "mysession",
   "from": "xxx@s.whatsapp.net",
