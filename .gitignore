@@ -1,3 +1,5 @@
 node_modules/
 wa_credentials/
 .env
+media/*
+!media/.gitkeep

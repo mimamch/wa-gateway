@@ -1,10 +1,23 @@
 import { MessageReceived } from "wa-multi-session";
 import { CreateWebhookProps, webhookClient } from ".";
+import {
+  handleWebhookAudioMessage,
+  handleWebhookDocumentMessage,
+  handleWebhookImageMessage,
+  handleWebhookVideoMessage,
+} from "./media";
 
 type WebhookMessageBody = {
   session: string;
   from: string | null;
   message: string | null;
+
+  media: {
+    image: string | null;
+    video: string | null;
+    document: string | null;
+    audio: string | null;
+  };
 };
 
 export const createWebhookMessage =
@@ -13,6 +26,11 @@ export const createWebhookMessage =
       return;
 
     const endpoint = `${props.baseUrl}/message`;
+
+    const image = await handleWebhookImageMessage(message);
+    const video = await handleWebhookVideoMessage(message);
+    const document = await handleWebhookDocumentMessage(message);
+    const audio = await handleWebhookAudioMessage(message);
 
     const body = {
       session: message.sessionId,
@@ -27,6 +45,16 @@ export const createWebhookMessage =
         message.message?.locationMessage?.comment ||
         message.message?.liveLocationMessage?.caption ||
         null,
+
+      /**
+       * media message
+       */
+      media: {
+        image,
+        video,
+        document,
+        audio,
+      },
     } satisfies WebhookMessageBody;
     webhookClient.post(endpoint, body).catch(console.error);
   };
