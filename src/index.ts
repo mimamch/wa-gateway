@@ -13,6 +13,7 @@ import { CreateWebhookProps } from "./webhooks";
 import { createWebhookMessage } from "./webhooks/message";
 import { createWebhookSession } from "./webhooks/session";
 import { createProfileController } from "./controllers/profile";
+import { serveStatic } from "@hono/node-server/serve-static";
 
 const app = new Hono();
 
@@ -25,6 +26,16 @@ app.use(cors());
 
 app.onError(globalErrorMiddleware);
 app.notFound(notFoundMiddleware);
+
+/**
+ * serve media message static files
+ */
+app.use(
+  "/media/*",
+  serveStatic({
+    root: "./",
+  })
+);
 
 /**
  * session routes

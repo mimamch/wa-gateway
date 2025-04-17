@@ -142,6 +142,63 @@ axios.post("http://localhost:5001/message/send-image", {
 });
 ```
 
+## Webhook Guide
+
+Set your webhook URL in the environment variable `WEBHOOK_BASE_URL` or in the `.env` file.
+The request method will be `POST` and the body will be in JSON format.
+
+```
+WEBHOOK_BASE_URL="http://yourdomain.com/webhook"
+```
+
+### 🪝 Session Webhook
+
+Request path:
+
+```
+POST http://yourdomain.com/webhook/session
+```
+
+Example body:
+
+```json
+{
+  "session": "mysession",
+  "status": "connected" //  "disconnected" | "connecting"
+}
+```
+
+### 🪝 Message Webhook
+
+Request path:
+
+```
+POST http://yourdomain.com/webhook/message
+```
+
+Example body:
+
+```json
+{
+  "session": "mysession",
+  "from": "xxx@s.whatsapp.net",
+  "message": "Hello World",
+  "media": {
+    "image": "3A5089C2F2652D46EBC5.jpg",
+    "video": null,
+    "document": null,
+    "audio": null
+  }
+}
+```
+
+You can get the media file by using the `media` object in the webhook message. The media file will be saved in the `./media` directory with the name specified in the `media` object.
+You can access media files using the following URL format:
+
+```
+http://localhost:5001/media/3A5089C2F2652D46EBC5.jpg
+```
+
 ## Upgrading
 
 ```
