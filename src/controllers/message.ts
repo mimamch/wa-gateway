@@ -12,6 +12,7 @@ export const createMessageController = () => {
     session: z.string(),
     to: z.string(),
     text: z.string(),
+    is_group: z.boolean().optional(),
   });
 
   app.post(
@@ -31,12 +32,14 @@ export const createMessageController = () => {
         sessionId: payload.session,
         to: payload.to,
         duration: Math.min(5000, payload.text.length * 100),
+        isGroup: payload.is_group,
       });
 
       const response = await whatsapp.sendTextMessage({
         sessionId: payload.session,
         to: payload.to,
         text: payload.text,
+        isGroup: payload.is_group,
       });
 
       return c.json({
@@ -45,6 +48,10 @@ export const createMessageController = () => {
     }
   );
 
+  /**
+   * @deprecated
+   * This endpoint is deprecated, use POST /send-text instead
+   */
   app.get(
     "/send-text",
     createKeyMiddleware(),
@@ -94,6 +101,7 @@ export const createMessageController = () => {
         sessionId: payload.session,
         to: payload.to,
         duration: Math.min(5000, payload.text.length * 100),
+        isGroup: payload.is_group,
       });
 
       const response = await whatsapp.sendImage({
@@ -101,6 +109,7 @@ export const createMessageController = () => {
         to: payload.to,
         text: payload.text,
         media: payload.image_url,
+        isGroup: payload.is_group,
       });
 
       return c.json({
@@ -133,6 +142,7 @@ export const createMessageController = () => {
         sessionId: payload.session,
         to: payload.to,
         duration: Math.min(5000, payload.text.length * 100),
+        isGroup: payload.is_group,
       });
 
       const response = await whatsapp.sendDocument({
@@ -141,6 +151,7 @@ export const createMessageController = () => {
         text: payload.text,
         media: payload.document_url,
         filename: payload.document_name,
+        isGroup: payload.is_group,
       });
 
       return c.json({
@@ -173,6 +184,7 @@ export const createMessageController = () => {
         sessionId: payload.session,
         to: payload.to,
         media: payload.image_url,
+        isGroup: payload.is_group,
       });
 
       return c.json({
