@@ -1,0 +1,11 @@
+services:
+  wa-gateway:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wa-gateway
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
