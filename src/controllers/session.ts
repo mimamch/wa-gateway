@@ -5,7 +5,7 @@ import { z } from "zod";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
 import { HTTPException } from "hono/http-exception";
-import { whatsappAgenixAgentMap } from "../webhooks/message"; // Import the map
+import { whatsappAgenixAgentMap, whatsappAgenixSessionMap } from "../webhooks/message"; // Import the maps
 import { saveMaps } from "../utils/persistence"; // Import saveMaps
 
 export const createSessionController = () => {
@@ -31,6 +31,16 @@ export const createSessionController = () => {
 
       const isExist = whatsapp.getSession(payload.session);
       if (isExist) {
+        // Clear existing mappings for the session before starting a new one
+        if (whatsappAgenixAgentMap.has(payload.session)) {
+          whatsappAgenixAgentMap.delete(payload.session);
+          console.log(`[createSessionController:/start] Cleared existing whatsappAgenixAgentMap for session '${payload.session}'.`);
+        }
+        if (whatsappAgenixSessionMap.has(payload.session)) {
+          whatsappAgenixSessionMap.delete(payload.session);
+          console.log(`[createSessionController:/start] Cleared existing whatsappAgenixSessionMap for session '${payload.session}'.`);
+        }
+        await saveMaps(); // Save the updated maps after clearing
         throw new HTTPException(400, {
           message: "Session already exist",
         });
@@ -49,6 +59,17 @@ export const createSessionController = () => {
           },
           onQRUpdated(qr) {
             r(qr);
+          },
+          onDisconnected: async () => {
+            if (whatsappAgenixAgentMap.has(payload.session)) {
+              whatsappAgenixAgentMap.delete(payload.session);
+              console.log(`[createSessionController:onDisconnected] Removed session '${payload.session}' from whatsappAgenixAgentMap.`);
+            }
+            if (whatsappAgenixSessionMap.has(payload.session)) {
+              whatsappAgenixSessionMap.delete(payload.session);
+              console.log(`[createSessionController:onDisconnected] Removed session '${payload.session}' from whatsappAgenixSessionMap.`);
+            }
+            await saveMaps();
           },
         });
       });
@@ -75,6 +96,16 @@ export const createSessionController = () => {
 
       const isExist = whatsapp.getSession(payload.session);
       if (isExist) {
+        // Clear existing mappings for the session before starting a new one
+        if (whatsappAgenixAgentMap.has(payload.session)) {
+          whatsappAgenixAgentMap.delete(payload.session);
+          console.log(`[createSessionController:/start] Cleared existing whatsappAgenixAgentMap for session '${payload.session}'.`);
+        }
+        if (whatsappAgenixSessionMap.has(payload.session)) {
+          whatsappAgenixSessionMap.delete(payload.session);
+          console.log(`[createSessionController:/start] Cleared existing whatsappAgenixSessionMap for session '${payload.session}'.`);
+        }
+        await saveMaps(); // Save the updated maps after clearing
         throw new HTTPException(400, {
           message: "Session already exist",
         });
@@ -87,6 +118,17 @@ export const createSessionController = () => {
           },
           onQRUpdated(qr) {
             r(qr);
+          },
+          onDisconnected: async () => {
+            if (whatsappAgenixAgentMap.has(payload.session)) {
+              whatsappAgenixAgentMap.delete(payload.session);
+              console.log(`[createSessionController:onDisconnected] Removed session '${payload.session}' from whatsappAgenixAgentMap.`);
+            }
+            if (whatsappAgenixSessionMap.has(payload.session)) {
+              whatsappAgenixSessionMap.delete(payload.session);
+              console.log(`[createSessionController:onDisconnected] Removed session '${payload.session}' from whatsappAgenixSessionMap.`);
+            }
+            await saveMaps();
           },
         });
       });
@@ -113,9 +155,21 @@ export const createSessionController = () => {
   );
 
   app.all("/logout", createKeyMiddleware(), async (c) => {
-    await whatsapp.deleteSession(
-      c.req.query().session || (await c.req.json()).session || ""
-    );
+    const session = c.req.query().session || (await c.req.json()).session || "";
+    await whatsapp.deleteSession(session);
+
+    // Clear related data from agenix_mappings.json
+    if (whatsappAgenixAgentMap.has(session)) {
+      whatsappAgenixAgentMap.delete(session);
+      console.log(`[createSessionController:logout] Removed session '${session}' from whatsappAgenixAgentMap.`);
+    }
+    // Assuming whatsappAgenixSessionMap also uses the session as a key, if not, adjust accordingly
+    if (whatsappAgenixSessionMap.has(session)) {
+      whatsappAgenixSessionMap.delete(session);
+      console.log(`[createSessionController:logout] Removed session '${session}' from whatsappAgenixSessionMap.`);
+    }
+    await saveMaps(); // Save the updated maps
+
     return c.json({
       data: "success",
     });

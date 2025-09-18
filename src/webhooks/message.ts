@@ -10,7 +10,7 @@ import { saveMaps } from '../utils/persistence';
 
 // In-memory map to store the mapping between WhatsApp session ID and Agenix session ID
 // In a real application, this would be persisted in a database.
-export const whatsappAgenixSessionMap = new Map<string, string>(); // Maps remoteJid to Agenix session ID
+export const whatsappAgenixSessionMap = new Map<string, { agenixSessionId: string, agenixAgentId: string }>(); // Maps remoteJid to Agenix session ID and its associated Agenix agent ID
 export const whatsappAgenixAgentMap = new Map<string, string>(); // Maps whatsappSessionId to Agenix agent ID
 
 export const createWebhookMessage =
@@ -38,7 +38,8 @@ export const createWebhookMessage =
     }
 
     let agenixAgentId = whatsappAgenixAgentMap.get(whatsappSessionId); // Agent is per WhatsApp multi-session instance
-    let agenixSessionId = whatsappAgenixSessionMap.get(remoteJid); // Session is per WhatsApp user (remoteJid)
+    let agenixSessionData = whatsappAgenixSessionMap.get(remoteJid); // Session is per WhatsApp user (remoteJid)
+    let agenixSessionId = agenixSessionData?.agenixSessionId;
 
     try {
       // Retrieve Agenix agent for this WhatsApp session
@@ -54,8 +55,8 @@ export const createWebhookMessage =
         console.log(`Creating new Agenix session for agent: ${agenixAgentId}`);
         const newSession = await createAgenixSession(agenixAgentId); // Create session with the agent
         agenixSessionId = newSession._id;
-        whatsappAgenixSessionMap.set(remoteJid, agenixSessionId as string); // Map session to remoteJid
-        console.log(`Created Agenix session with ID: ${agenixSessionId} for remoteJid: ${remoteJid}`);
+        whatsappAgenixSessionMap.set(remoteJid, { agenixSessionId: agenixSessionId as string, agenixAgentId: agenixAgentId as string }); // Map session to remoteJid with agent ID
+        console.log(`Created Agenix session with ID: ${agenixSessionId} for remoteJid: ${remoteJid}, associated with agent: ${agenixAgentId}`);
         await saveMaps(); // Save mappings after creating a new session
       }
 

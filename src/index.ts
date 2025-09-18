@@ -13,8 +13,8 @@ import { createAgentController } from "./controllers/agent"; // Import createAge
 import { CreateWebhookProps } from "./webhooks";
 import { createWebhookMessage, whatsappAgenixAgentMap, whatsappAgenixSessionMap } from "./webhooks/message";
 import { createAgenixAgent, createAgenixSession } from "./services/agenix.service";
-import { loadMaps, saveMaps } from './utils/persistence';
-// import { createWebhookSession } from "./webhooks/session"; // Commented out
+import { loadMaps, saveMaps, removeAgenixMappingsForWhatsappSession } from './utils/persistence';
+import { createWebhookSession } from "./webhooks/session";
 import { createProfileController } from "./controllers/profile";
 import { serveStatic } from "@hono/node-server/serve-static";
 
@@ -106,22 +106,26 @@ if (env.WEBHOOK_BASE_URL) {
   // message webhook
   whastapp.onMessageReceived(createWebhookMessage(webhookProps));
 
-  // session webhook (commented out as it's causing 404 and not directly related to core task)
-  // const webhookSession = createWebhookSession(webhookProps);
+  // session webhook
+  const webhookSession = createWebhookSession(webhookProps);
 
-  // whastapp.onConnected((session) => {
-  //   console.log(`session: '${session}' connected`);
-  //   webhookSession({ session, status: "connected" });
-  // });
-  // whastapp.onConnecting((session) => {
-  //   console.log(`session: '${session}' connecting`);
-  //   webhookSession({ session, status: "connecting" });
-  // });
-  // whastapp.onDisconnected((session) => {
-  //   console.log(`session: '${session}' disconnected`);
-  //   webhookSession({ session, status: "disconnected" });
-  // });
+  whastapp.onConnected((session) => {
+    console.log(`session: '${session}' connected`);
+    webhookSession({ session, status: "connected" });
+  });
+  whastapp.onConnecting((session) => {
+    console.log(`session: '${session}' connecting`);
+    webhookSession({ session, status: "connecting" });
+  });
+  whastapp.onDisconnected((session) => {
+    console.log(`session: '${session}' disconnected`);
+    webhookSession({ session, status: "disconnected" });
+  });
 }
+whastapp.onDisconnected(async (session) => {
+  console.log(`[onDisconnected] WhatsApp session: '${session}' disconnected. Clearing associated data.`);
+  await removeAgenixMappingsForWhatsappSession(session);
+});
 // End Implement Webhook
 
 // Load existing mappings on startup

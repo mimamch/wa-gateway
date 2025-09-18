@@ -1,4 +1,5 @@
 import { CreateWebhookProps, webhookClient } from ".";
+import { removeAgenixMappingsForWhatsappSession } from "../utils/persistence";
 
 type SessionStatus = "connected" | "disconnected" | "connecting";
 
@@ -15,6 +16,11 @@ export const createWebhookSession =
       session: event.session,
       status: event.status,
     } satisfies WebhookSessionBody;
+
+    if (event.status === "disconnected") {
+      console.log(`WhatsApp session ${event.session} disconnected. Removing related Agenix mappings.`);
+      await removeAgenixMappingsForWhatsappSession(event.session);
+    }
 
     webhookClient.post(endpoint, body).catch(console.error);
   };
