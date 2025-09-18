@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CipherWAAI WhatsApp</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(249, 249, 249, 0.8);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #25D366;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        .qr-section {
+            text-align: center;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        #qrCodeImage {
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status.loading {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #d63031;
+        }
+
+        .status.success {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+        }
+
+        .status.error {
+            background: linear-gradient(135deg, #d63031 0%, #e17055 100%);
+            color: white;
+        }
+
+        .connection-info {
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .connection-info h3 {
+            color: #2d5a27;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .connection-info p {
+            color: #4a7c59;
+            font-size: 0.95rem;
+            word-break: break-all;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .feature-list {
+            background: rgba(37, 211, 102, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-list h4 {
+            color: #128C7E;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .feature-list ul {
+            list-style: none;
+            color: #2c3e50;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #25D366;
+            font-weight: bold;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 20px;
+            }
+            
+            .header {
+                padding: 25px 20px;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .qr-container {
+                padding: 20px;
+                margin: 15px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .title {
+                font-size: 1.3rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h1 class="title">CipherWAAI</h1>
+                <p class="subtitle">AI-Powered WhatsApp Assistant</p>
+            </div>
+        </div>
+
+        <!-- Initial Setup Section -->
+        <div id="initialSetup" class="content">
+            <div class="feature-list">
+                <h4><i class="fas fa-magic"></i> Features</h4>
+                <ul>
+                    <li>Custom AI system prompts</li>
+                    <li>Real-time WhatsApp integration</li>
+                    <li>Secure session management</li>
+                    <li>Responsive design</li>
+                </ul>
+            </div>
+            
+            <div class="form-group">
+                <label for="systemPrompt" class="form-label">
+                    <i class="fas fa-robot"></i> System Prompt
+                </label>
+                <textarea 
+                    id="systemPrompt" 
+                    class="form-input" 
+                    placeholder="Enter your AI assistant's instructions and personality..."
+                    rows="4"
+                    style="resize: vertical; min-height: 120px;"
+                ></textarea>
+            </div>
+            
+            <button id="continueButton" class="btn btn-primary">
+                <i class="fas fa-rocket"></i>
+                Launch Assistant
+            </button>
+        </div>
+
+        <!-- QR Code Section -->
+        <div id="qrCodeSection" class="content hidden">
+            <div class="qr-section">
+                <h3 style="color: #2c3e50; margin-bottom: 20px;">
+                    <i class="fas fa-qrcode"></i> Connect WhatsApp
+                </h3>
+                <div class="qr-container">
+                    <canvas id="qrCodeImage" width="250" height="250"></canvas>
+                </div>
+                <div id="status" class="status loading">
+                    <div class="loading-spinner"></div>
+                    Creating AI agent...
+                </div>
+                <div style="margin-top: 20px; color: #6c757d; font-size: 0.9rem;">
+                    <i class="fas fa-mobile-alt"></i>
+                    Open WhatsApp on your phone and scan the QR code
+                </div>
+            </div>
+        </div>
+
+        <!-- Connected Section -->
+        <div id="connectedSection" class="content hidden">
+            <div class="connection-info">
+                <h3><i class="fas fa-check-circle"></i> Connected Successfully!</h3>
+                <p id="connectionStatus">Your AI assistant is now active</p>
+            </div>
+            
+            <div style="margin-bottom: 15px; color: #6c757d; text-align: center;">
+                <i class="fas fa-comments"></i>
+                Start chatting with your AI assistant on WhatsApp
+            </div>
+            
+            <button id="logoutButton" class="btn btn-secondary">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+            
+            <button id="clearButton" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i>
+                Clear Session
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = window.location.origin;
+        const API_KEY = ""; // Add API key if needed
+
+        const systemPromptInput = document.getElementById('systemPrompt');
+        const continueButton = document.getElementById('continueButton');
+        const initialSetupDiv = document.getElementById('initialSetup');
+        const qrCodeSectionDiv = document.getElementById('qrCodeSection');
+        const qrCodeCanvas = document.getElementById('qrCodeImage');
+        const statusText = document.getElementById('status');
+        const connectedSectionDiv = document.getElementById('connectedSection');
+        const connectionStatusText = document.getElementById('connectionStatus');
+        const logoutButton = document.getElementById('logoutButton');
+        const clearButton = document.getElementById('clearButton');
+
+        let currentWhatsappSessionId = null;
+        let currentAgenixAgentId = null; // New variable to store Agenix Agent ID
+        let connectionCheckInterval = null;
+
+        function generateSessionId() {
+            return 'waai-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        }
+
+        function updateStatus(message, type = 'loading') {
+            statusText.className = `status ${type}`;
+            statusText.innerHTML = type === 'loading' 
+                ? `<div class="loading-spinner"></div> ${message}`
+                : `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'}"></i> ${message}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add some example prompts for better UX
+            systemPromptInput.placeholder = `Example: You are a helpful AI assistant that can answer questions, provide information, and assist with various tasks. Be friendly, professional, and concise in your responses.`;
+            
+            const storedSessionId = sessionStorage.getItem('cipherwaai_session_id');
+            const storedAgentId = sessionStorage.getItem('cipherwaai_agenix_agent_id');
+
+            if (storedSessionId && storedAgentId) {
+                currentWhatsappSessionId = storedSessionId;
+                currentAgenixAgentId = storedAgentId;
+                showConnectedView();
+            }
+        });
+
+        function showConnectedView() {
+            initialSetupDiv.classList.add('hidden');
+            qrCodeSectionDiv.classList.add('hidden');
+            connectedSectionDiv.classList.remove('hidden');
+            connectionStatusText.textContent = `Session: ${currentWhatsappSessionId}`;
+        }
+
+        continueButton.addEventListener('click', async () => {
+            const systemPrompt = systemPromptInput.value.trim();
+            if (!systemPrompt) {
+                systemPromptInput.focus();
+                systemPromptInput.style.borderColor = '#dc3545';
+                setTimeout(() => systemPromptInput.style.borderColor = '#e9ecef', 3000);
+                return;
+            }
+
+            continueButton.disabled = true;
+            continueButton.innerHTML = '<div class="loading-spinner"></div> Setting up...';
+            
+            initialSetupDiv.classList.add('hidden');
+            qrCodeSectionDiv.classList.remove('hidden');
+            updateStatus('Creating AI agent...');
+
+            try {
+let agenixAgentIdToUse = currentAgenixAgentId;
+
+                if (!agenixAgentIdToUse) {
+                    // 1. Create agent if one doesn't exist
+                    updateStatus('Creating AI agent...');
+                    const agentRes = await fetch(`${BACKEND_URL}/agent`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                        body: JSON.stringify({ chatAgentName: 'CipherWAAI Bot', systemPrompt })
+                    });
+                    const agentData = await agentRes.json();
+                    if (!agentRes.ok || !agentData.success) {
+                        throw new Error(agentData.error || 'Failed to create agent.');
+                    }
+                    agenixAgentIdToUse = agentData.data._id;
+                    sessionStorage.setItem('cipherwaai_agenix_agent_id', agenixAgentIdToUse);
+                    currentAgenixAgentId = agenixAgentIdToUse;
+                } else {
+                    updateStatus('Reusing existing AI agent...');
+                }
+
+                currentWhatsappSessionId = generateSessionId();
+                updateStatus('Generating QR code...');
+
+                // 2. Start WhatsApp session, associating with the Agenix Agent
+                const sessionRes = await fetch(`${BACKEND_URL}/session/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                    body: JSON.stringify({
+                        session: currentWhatsappSessionId,
+                        agenixAgentId: agenixAgentIdToUse // Pass the Agenix Agent ID
+                    })
+                });
+                const sessionData = await sessionRes.json();
+                if (!sessionRes.ok) {
+                    throw new Error(sessionData.message || 'Failed to start WhatsApp session.');
+                }
+
+                if (sessionData.qr) {
+                    // Generate QR code on canvas
+                    QRCode.toCanvas(qrCodeCanvas, sessionData.qr, { width: 250 }, err => {
+                        if (err) {
+                            console.error(err);
+                            updateStatus('Error generating QR code.', 'error');
+                        } else {
+                            updateStatus('Scan QR code with WhatsApp', 'success');
+                        }
+                    });
+                    startConnectionCheck();
+                } else if (sessionData.data?.message === 'Connected') {
+                    handleConnectionSuccess();
+                } else {
+                    throw new Error('Failed to get QR code or connection status.');
+                }
+
+            } catch (err) {
+                console.error('Setup error:', err);
+                updateStatus(`Error: ${err.message}`, 'error');
+                setTimeout(() => {
+                    initialSetupDiv.classList.remove('hidden');
+                    qrCodeSectionDiv.classList.add('hidden');
+                    continueButton.disabled = false;
+                    continueButton.innerHTML = '<i class="fas fa-rocket"></i> Launch Assistant';
+                }, 3000);
+            }
+        });
+
+        async function checkConnectionStatus() {
+            if (!currentWhatsappSessionId) return;
+            try {
+                const res = await fetch(`${BACKEND_URL}/session?session=${currentWhatsappSessionId}`, {
+                    headers: { 'X-API-KEY': API_KEY }
+                });
+                const data = await res.json();
+                const sessionInfo = data.data.find(s => s.id === currentWhatsappSessionId);
+                if (sessionInfo?.status === 'CONNECTED') {
+                    handleConnectionSuccess();
+                } else {
+                    updateStatus(`Connecting... (${sessionInfo ? sessionInfo.status : 'Unknown'})`, 'loading');
+                }
+            } catch (err) {
+                console.error('Error checking status:', err);
+                updateStatus(`Error checking status: ${err.message}`, 'error');
+            }
+        }
+
+        function startConnectionCheck() {
+            if (connectionCheckInterval) clearInterval(connectionCheckInterval);
+            connectionCheckInterval = setInterval(checkConnectionStatus, 3000);
+        }
+
+        function handleConnectionSuccess() {
+            if (connectionCheckInterval) clearInterval(connectionCheckInterval);
+            sessionStorage.setItem('cipherwaai_session_id', currentWhatsappSessionId);
+            // currentAgenixAgentId should already be set by this point if an agent was created or reused
+            // If it's not, it means we reconnected to an existing session without going through the agent creation flow.
+            // In a more robust system, we'd fetch the agenixAgentId from the backend based on currentWhatsappSessionId.
+            // For now, we assume it's set during the initial "Launch Assistant" click.
+            showConnectedView();
+            console.log('WhatsApp session connected successfully!');
+        }
+
+        async function logoutOrClear() {
+            if (!currentWhatsappSessionId) return;
+            
+            logoutButton.disabled = true;
+            clearButton.disabled = true;
+            logoutButton.innerHTML = '<div class="loading-spinner"></div> Logging out...';
+            
+            try {
+                await fetch(`${BACKEND_URL}/session/logout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                    body: JSON.stringify({ session: currentWhatsappSessionId })
+                });
+            } catch (err) {
+                console.error(err);
+            } finally {
+                clearSessionData();
+            }
+        }
+
+        logoutButton.addEventListener('click', logoutOrClear);
+        clearButton.addEventListener('click', logoutOrClear);
+
+        function clearSessionData() {
+            sessionStorage.removeItem('cipherwaai_session_id');
+            sessionStorage.removeItem('cipherwaai_agenix_agent_id'); // Clear Agenix Agent ID
+            currentWhatsappSessionId = null;
+            currentAgenixAgentId = null; // Reset Agenix Agent ID
+            if (connectionCheckInterval) clearInterval(connectionCheckInterval);
+            
+            // Reset UI
+            initialSetupDiv.classList.remove('hidden');
+            qrCodeSectionDiv.classList.add('hidden');
+            connectedSectionDiv.classList.add('hidden');
+            systemPromptInput.value = '';
+            
+            // Clear canvas
+            const ctx = qrCodeCanvas.getContext('2d');
+            ctx.clearRect(0, 0, qrCodeCanvas.width, qrCodeCanvas.height);
+            
+            // Reset buttons
+            continueButton.disabled = false;
+            continueButton.innerHTML = '<i class="fas fa-rocket"></i> Launch Assistant';
+            logoutButton.disabled = false;
+            clearButton.disabled = false;
+            logoutButton.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+            
+            console.log('Local session data cleared.');
+        }
+
+        // Add some nice interactions
+        systemPromptInput.addEventListener('input', function() {
+            this.style.borderColor = this.value.trim() ? '#25D366' : '#e9ecef';
+        });
+    </script>
+</body>
+</html>

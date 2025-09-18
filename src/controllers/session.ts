@@ -5,6 +5,8 @@ import { z } from "zod";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
 import { HTTPException } from "hono/http-exception";
+import { whatsappAgenixAgentMap } from "../webhooks/message"; // Import the map
+import { saveMaps } from "../utils/persistence"; // Import saveMaps
 
 export const createSessionController = () => {
   const app = new Hono();
@@ -17,6 +19,7 @@ export const createSessionController = () => {
 
   const startSessionSchema = z.object({
     session: z.string(),
+    agenixAgentId: z.string().optional(), // Add agenixAgentId to the schema
   });
 
   app.post(
@@ -35,7 +38,13 @@ export const createSessionController = () => {
 
       const qr = await new Promise<string | null>(async (r) => {
         await whatsapp.startSession(payload.session, {
-          onConnected() {
+          onConnected: async () => { // Make onConnected an async function
+            if (payload.agenixAgentId) {
+              whatsappAgenixAgentMap.set(payload.session, payload.agenixAgentId);
+              console.log(`[createSessionController:onConnected] Mapped WhatsApp session '${payload.session}' to Agenix agent '${payload.agenixAgentId}'.`);
+              console.log(`[createSessionController:onConnected] Current whatsappAgenixAgentMap size: ${whatsappAgenixAgentMap.size}`);
+              await saveMaps(); // Ensure saveMaps is awaited
+            }
             r(null);
           },
           onQRUpdated(qr) {

@@ -10,5 +10,6 @@ export const env = z
       .default("5001")
       .transform((e) => Number(e)),
     WEBHOOK_BASE_URL: z.string().optional(),
+    WEBHOOK_BASE_URL: z.string(),
   })
   .parse(process.env);
