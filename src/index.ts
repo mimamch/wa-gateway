@@ -14,6 +14,9 @@ import { createWebhookMessage } from "./webhooks/message";
 import { createWebhookSession } from "./webhooks/session";
 import { createProfileController } from "./controllers/profile";
 import { serveStatic } from "@hono/node-server/serve-static";
+import { createAdminController } from "./controllers/admin";
+// Initialize database
+import "./database/db";
 
 const app = new Hono();
 
@@ -37,6 +40,10 @@ app.use(
   })
 );
 
+/**
+ * admin routes
+ */
+app.route("/admin", createAdminController());
 /**
  * session routes
  */

@@ -4,9 +4,14 @@ import { requestValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
 import * as whatsapp from "wa-multi-session";
 import { HTTPException } from "hono/http-exception";
+import { basicAuthMiddleware } from "../middlewares/auth.middleware";
+import type { User } from "../database/db";
 
 export const createMessageController = () => {
   const app = new Hono();
+
+  // Apply basic auth to all message routes
+  app.use("*", basicAuthMiddleware());
 
   const sendMessageSchema = z.object({
     session: z.string(),
@@ -17,10 +22,18 @@ export const createMessageController = () => {
 
   app.post(
     "/send-text",
-    createKeyMiddleware(),
     requestValidator("json", sendMessageSchema),
     async (c) => {
       const payload = c.req.valid("json");
+      const user = c.get("user") as User;
+      
+      // For non-admin users, ensure they can only use their own sessions
+      if (user.is_admin !== 1 && !payload.session.startsWith(user.username + "_")) {
+        throw new HTTPException(403, {
+          message: "You can only use your own sessions",
+        });
+      }
+      
       const isExist = whatsapp.getSession(payload.session);
       if (!isExist) {
         throw new HTTPException(400, {
@@ -54,10 +67,18 @@ export const createMessageController = () => {
    */
   app.get(
     "/send-text",
-    createKeyMiddleware(),
     requestValidator("query", sendMessageSchema),
     async (c) => {
       const payload = c.req.valid("query");
+      const user = c.get("user") as User;
+      
+      // For non-admin users, ensure they can only use their own sessions
+      if (user.is_admin !== 1 && !payload.session.startsWith(user.username + "_")) {
+        throw new HTTPException(403, {
+          message: "You can only use your own sessions",
+        });
+      }
+      
       const isExist = whatsapp.getSession(payload.session);
       if (!isExist) {
         throw new HTTPException(400, {
@@ -79,7 +100,6 @@ export const createMessageController = () => {
 
   app.post(
     "/send-image",
-    createKeyMiddleware(),
     requestValidator(
       "json",
       sendMessageSchema.merge(
@@ -90,6 +110,15 @@ export const createMessageController = () => {
     ),
     async (c) => {
       const payload = c.req.valid("json");
+      const user = c.get("user") as User;
+      
+      // For non-admin users, ensure they can only use their own sessions
+      if (user.is_admin !== 1 && !payload.session.startsWith(user.username + "_")) {
+        throw new HTTPException(403, {
+          message: "You can only use your own sessions",
+        });
+      }
+      
       const isExist = whatsapp.getSession(payload.session);
       if (!isExist) {
         throw new HTTPException(400, {
@@ -119,7 +148,6 @@ export const createMessageController = () => {
   );
   app.post(
     "/send-document",
-    createKeyMiddleware(),
     requestValidator(
       "json",
       sendMessageSchema.merge(
@@ -131,6 +159,15 @@ export const createMessageController = () => {
     ),
     async (c) => {
       const payload = c.req.valid("json");
+      const user = c.get("user") as User;
+      
+      // For non-admin users, ensure they can only use their own sessions
+      if (user.is_admin !== 1 && !payload.session.startsWith(user.username + "_")) {
+        throw new HTTPException(403, {
+          message: "You can only use your own sessions",
+        });
+      }
+      
       const isExist = whatsapp.getSession(payload.session);
       if (!isExist) {
         throw new HTTPException(400, {
@@ -162,7 +199,6 @@ export const createMessageController = () => {
 
   app.post(
     "/send-sticker",
-    createKeyMiddleware(),
     requestValidator(
       "json",
       sendMessageSchema.merge(
@@ -173,6 +209,15 @@ export const createMessageController = () => {
     ),
     async (c) => {
       const payload = c.req.valid("json");
+      const user = c.get("user") as User;
+      
+      // For non-admin users, ensure they can only use their own sessions
+      if (user.is_admin !== 1 && !payload.session.startsWith(user.username + "_")) {
+        throw new HTTPException(403, {
+          message: "You can only use your own sessions",
+        });
+      }
+      
       const isExist = whatsapp.getSession(payload.session);
       if (!isExist) {
         throw new HTTPException(400, {

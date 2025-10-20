@@ -5,9 +5,14 @@ import { z } from "zod";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
 import { HTTPException } from "hono/http-exception";
+import { basicAuthMiddleware } from "../middlewares/auth.middleware";
+import type { User } from "../database/db";
 
 export const createProfileController = () => {
   const app = new Hono();
+
+  // Apply basic auth to all profile routes
+  app.use("*", basicAuthMiddleware());
 
   const getProfileSchema = z.object({
     session: z.string(),
@@ -20,10 +25,18 @@ export const createProfileController = () => {
 
   app.post(
     "/",
-    createKeyMiddleware(),
     requestValidator("json", getProfileSchema),
     async (c) => {
       const payload = c.req.valid("json");
+      const user = c.get("user") as User;
+      
+      // For non-admin users, ensure they can only use their own sessions
+      if (user.is_admin !== 1 && !payload.session.startsWith(user.username + "_")) {
+        throw new HTTPException(403, {
+          message: "You can only use your own sessions",
+        });
+      }
+      
       const isExist = whatsapp.getSession(payload.session);
       if (!isExist) {
         throw new HTTPException(400, {
