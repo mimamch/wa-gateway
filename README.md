@@ -2,6 +2,16 @@
 
 Easy Setup Headless multi session Whatsapp Gateway with NodeJS
 
+## 🆕 New Features
+
+- **Multi-user Support**: Multiple users with individual authentication
+- **User Management**: Admin panel for creating and managing users
+- **Session Isolation**: Each user has their own isolated sessions
+- **SQLite Database**: Secure credential storage with bcrypt hashing
+- **Web Dashboard**: User-friendly UI for session management and QR code generation
+
+## Core Features
+
 - Support Multi device
 - Support Multi Session / Multi Phone Number
 - Send Text Message
@@ -34,25 +44,81 @@ Easy Setup Headless multi session Whatsapp Gateway with NodeJS
   npm install
 ```
 
-#### 4. Start the server
+#### 4. Configure Environment (Optional)
+
+Create a `.env` file to set admin credentials:
+
+```env
+PORT=5001
+ADMIN_USER=admin
+ADMIN_PASSWORD=your_secure_password
+```
+
+Default credentials are `admin`/`admin` if not configured.
+
+#### 5. Start the server
 
 ```bash
   npm run start
 ```
 
-#### 5. Open On Browser & Start Scan QR
+#### 6. Access the Application
 
 ```
-http://localhost:5001/session/start?session=mysession
+http://localhost:5001/
 ```
 
-#### 6. Sending first message
+You'll be greeted with a welcome page with links to:
+- **Dashboard**: Manage your sessions and generate QR codes
+- **Admin Panel**: Create and manage users (admin only)
 
-```
-http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=Hello
+#### 7. Using the Dashboard
+
+Login with your credentials and create a new session. The system will:
+1. Generate a QR code
+2. Display it in the browser
+3. Wait for you to scan it with WhatsApp
+4. Automatically connect once scanned
+
+## 🔐 Authentication
+
+All endpoints now require HTTP Basic Authentication. See [USER_MANAGEMENT.md](./USER_MANAGEMENT.md) for detailed documentation.
+
+### Quick Start with Authentication
+
+```bash
+# Create a session (as admin)
+curl -u admin:admin -X POST http://localhost:5001/session/start \
+  -H "Content-Type: application/json" \
+  -d '{"session": "mysession"}'
+
+# Send a message
+curl -u admin:admin -X POST http://localhost:5001/message/send-text \
+  -H "Content-Type: application/json" \
+  -d '{
+    "session": "mysession",
+    "to": "628123456789",
+    "text": "Hello World"
+  }'
 ```
 
 ## API Reference
+
+**Note**: All API endpoints require HTTP Basic Authentication.
+
+#### Authentication
+
+All requests must include HTTP Basic Auth credentials:
+
+```bash
+curl -u username:password http://localhost:5001/endpoint
+```
+
+Or using Authorization header:
+
+```bash
+curl -H "Authorization: Basic base64(username:password)" http://localhost:5001/endpoint
+```
 
 #### Add new session
 
@@ -129,16 +195,27 @@ http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=H
 ### Using Axios
 
 ```js
+// Configure axios with authentication
+const axios = require('axios');
+
+const api = axios.create({
+  baseURL: 'http://localhost:5001',
+  auth: {
+    username: 'yourusername',
+    password: 'yourpassword'
+  }
+});
+
 // send text
-axios.post("http://localhost:5001/message/send-text", {
-  session: "mysession",
+api.post("/message/send-text", {
+  session: "yourusername_mysession",  // Note: prefixed with username for regular users
   to: "62812345678",
   text: "hello world",
 });
 
 // send image
-axios.post("http://localhost:5001/message/send-image", {
-  session: "mysession",
+api.post("/message/send-image", {
+  session: "yourusername_mysession",
   to: "62812345678",
   text: "hello world",
   image_url: "https://placehold.co/600x400",
