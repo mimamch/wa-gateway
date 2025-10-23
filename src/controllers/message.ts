@@ -6,9 +6,15 @@ import * as whatsapp from "wa-multi-session";
 import { HTTPException } from "hono/http-exception";
 import { basicAuthMiddleware } from "../middlewares/auth.middleware";
 import type { User } from "../database/db";
+import { messageStore } from "../utils/message-store";
+
+type Variables = {
+  user: User;
+};
 
 export const createMessageController = () => {
-  const app = new Hono();
+  const app = new Hono<{ Variables: Variables }>();
+  
 
   // Apply basic auth to all message routes
   app.use("*", basicAuthMiddleware());
@@ -18,6 +24,7 @@ export const createMessageController = () => {
     to: z.string(),
     text: z.string(),
     is_group: z.boolean().optional(),
+    quoted_message_id: z.string().optional(), // Message ID to reply to
   });
 
   app.post(
@@ -49,12 +56,31 @@ export const createMessageController = () => {
         isGroup: payload.is_group,
       });
 
-      const response = await whatsapp.sendTextMessage({
+      // Prepare send options
+      const sendOptions: any = {
         sessionId: payload.session,
         to: payload.to,
         text: payload.text,
         isGroup: payload.is_group,
-      });
+      };
+
+      // If quoted_message_id is provided, retrieve the original message and add it
+      if (payload.quoted_message_id) {
+        const quotedMessage = messageStore.getMessage(
+          payload.session,
+          payload.quoted_message_id
+        );
+
+        if (quotedMessage) {
+          sendOptions.answering = quotedMessage;
+        } else {
+          console.warn(
+            `Message ${payload.quoted_message_id} not found in store for quoting`
+          );
+        }
+      }
+
+      const response = await whatsapp.sendTextMessage(sendOptions);
 
       return c.json({
         data: response,
@@ -136,13 +162,28 @@ export const createMessageController = () => {
         isGroup: payload.is_group,
       });
 
-      const response = await whatsapp.sendImage({
+      // Build send options
+      const sendOptions: any = {
         sessionId: payload.session,
         to: payload.to,
         text: payload.text,
         media: payload.image_url,
         isGroup: payload.is_group,
-      });
+      };
+
+      // If quoted_message_id is provided, retrieve and add the original message
+      if (payload.quoted_message_id) {
+        const quotedMessage = messageStore.getMessage(
+          payload.session,
+          payload.quoted_message_id
+        );
+
+        if (quotedMessage) {
+          sendOptions.answering = quotedMessage;
+        }
+      }
+
+      const response = await whatsapp.sendImage(sendOptions);
 
       return c.json({
         data: response,
@@ -186,14 +227,29 @@ export const createMessageController = () => {
         isGroup: payload.is_group,
       });
 
-      const response = await whatsapp.sendDocument({
+      // Build send options
+      const sendOptions: any = {
         sessionId: payload.session,
         to: payload.to,
         text: payload.text,
         media: payload.document_url,
         filename: payload.document_name,
         isGroup: payload.is_group,
-      });
+      };
+
+      // If quoted_message_id is provided, retrieve and add the original message
+      if (payload.quoted_message_id) {
+        const quotedMessage = messageStore.getMessage(
+          payload.session,
+          payload.quoted_message_id
+        );
+
+        if (quotedMessage) {
+          sendOptions.answering = quotedMessage;
+        }
+      }
+
+      const response = await whatsapp.sendDocument(sendOptions);
 
       return c.json({
         data: response,
@@ -230,12 +286,27 @@ export const createMessageController = () => {
         });
       }
 
-      const response = await whatsapp.sendSticker({
+      // Build send options
+      const sendOptions: any = {
         sessionId: payload.session,
         to: payload.to,
         media: payload.image_url,
         isGroup: payload.is_group,
-      });
+      };
+
+      // If quoted_message_id is provided, retrieve and add the original message
+      if (payload.quoted_message_id) {
+        const quotedMessage = messageStore.getMessage(
+          payload.session,
+          payload.quoted_message_id
+        );
+
+        if (quotedMessage) {
+          sendOptions.answering = quotedMessage;
+        }
+      }
+
+      const response = await whatsapp.sendSticker(sendOptions);
 
       return c.json({
         data: response,

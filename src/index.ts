@@ -19,7 +19,13 @@ import { createDashboardController } from "./controllers/dashboard";
 // Initialize database
 import "./database/db";
 
-const app = new Hono();
+
+
+type Variables = {
+  user: User;
+};
+
+const app = new Hono<{ Variables: Variables }>();
 
 app.use(
   logger((...params) => {
@@ -229,9 +235,10 @@ whastapp.onConnected((session) => {
 });
 
 // Implement Per-User Webhook
-import { userDb } from "./database/db";
+import { User, userDb } from "./database/db";
 import axios from "axios";
 import { MessageReceived } from "wa-multi-session";
+import { messageStore } from "./utils/message-store";
 
 // Helper function to get callback URL for a session
 const getCallbackForSession = (sessionName: string): string | null => {
@@ -241,6 +248,9 @@ const getCallbackForSession = (sessionName: string): string | null => {
 
 // Message webhook with per-user callbacks
 whastapp.onMessageReceived(async (message: MessageReceived) => {
+  // Store message for later retrieval (for quoting/replying)
+  messageStore.storeMessage(message);
+
   if (message.key.fromMe || message.key.remoteJid?.includes("broadcast"))
     return;
 
@@ -250,11 +260,13 @@ whastapp.onMessageReceived(async (message: MessageReceived) => {
     return;
   }
 
-  const endpoint = `${callbackUrl}/message`;
+  const endpoint = `${callbackUrl}`;
+
   
   const body = {
     session: message.sessionId,
     from: message.key.remoteJid ?? null,
+    messageId: message.key.id,
     message:
       message.message?.conversation ||
       message.message?.extendedTextMessage?.text ||
@@ -272,6 +284,8 @@ whastapp.onMessageReceived(async (message: MessageReceived) => {
       audio: null,
     },
   };
+
+  console.log(body)
   
   axios.post(endpoint, body).catch((error) => {
     console.error(`Failed to send webhook to ${endpoint}:`, error.message);

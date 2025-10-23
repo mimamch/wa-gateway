@@ -8,8 +8,13 @@ import { userDb } from "../database/db";
 import { requestValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
 
+
+type Variables = {
+  user: User;
+};
+
 export const createDashboardController = () => {
-  const app = new Hono();
+  const app = new Hono<{ Variables: Variables }>();
 
   // Apply basic auth to all dashboard routes
   app.use("*", basicAuthMiddleware());

@@ -8,8 +8,12 @@ import { HTTPException } from "hono/http-exception";
 import { basicAuthMiddleware } from "../middlewares/auth.middleware";
 import type { User } from "../database/db";
 
+type Variables = {
+  user: User;
+};
+
 export const createProfileController = () => {
-  const app = new Hono();
+  const app = new Hono<{ Variables: Variables }>();
 
   // Apply basic auth to all profile routes
   app.use("*", basicAuthMiddleware());

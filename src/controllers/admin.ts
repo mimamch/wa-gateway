@@ -2,13 +2,18 @@ import { Hono } from "hono";
 import { basicAuthMiddleware, adminAuthMiddleware } from "../middlewares/auth.middleware";
 import { requestValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
-import { userDb } from "../database/db";
+import { userDb, User } from "../database/db";
 import { HTTPException } from "hono/http-exception";
 import { readFileSync } from "fs";
 import { join } from "path";
 
+
+type Variables = {
+  user: User;
+};
+
 export const createAdminController = () => {
-  const app = new Hono();
+  const app = new Hono<{ Variables: Variables }>();
 
   // Apply basic auth to all admin routes
   app.use("*", basicAuthMiddleware());
