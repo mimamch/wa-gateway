@@ -31,9 +31,10 @@ export const createProfileController = () => {
       const user = c.get("user") as User;
       
       // For non-admin users, ensure they can only use their own sessions
-      if (user.is_admin !== 1 && !payload.session.startsWith(user.username + "_")) {
+      const expectedSession = user.session_name || user.username;
+      if (user.is_admin !== 1 && payload.session !== expectedSession) {
         throw new HTTPException(403, {
-          message: "You can only use your own sessions",
+          message: `You can only use your session: ${expectedSession}`,
         });
       }
       

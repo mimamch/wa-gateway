@@ -88,6 +88,48 @@ export const createAdminController = () => {
     }
   );
 
+  // Update user session configuration
+  const updateSessionConfigSchema = z.object({
+    session_name: z.string().optional(),
+    callback_url: z.string().url().optional().nullable(),
+  });
+
+  app.put(
+    "/users/:id/session-config",
+    requestValidator("json", updateSessionConfigSchema),
+    async (c) => {
+      const userId = parseInt(c.req.param("id"));
+      const payload = c.req.valid("json");
+
+      const user = userDb.getUserById(userId);
+      if (!user) {
+        throw new HTTPException(404, {
+          message: "User not found",
+        });
+      }
+
+      if (user.is_admin === 1) {
+        throw new HTTPException(400, {
+          message: "Cannot update admin session configuration",
+        });
+      }
+
+      if (payload.session_name !== undefined) {
+        userDb.updateUserSessionName(userId, payload.session_name);
+      }
+
+      if (payload.callback_url !== undefined) {
+        userDb.updateUserCallbackUrl(userId, payload.callback_url);
+      }
+
+      return c.json({
+        data: {
+          message: "Session configuration updated successfully",
+        },
+      });
+    }
+  );
+
   // Delete user
   app.delete("/users/:id", async (c) => {
     const userId = parseInt(c.req.param("id"));

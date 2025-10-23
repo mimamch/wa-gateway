@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - WA Gateway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left h1 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .header-left .subtitle {
+            color: #666;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .username {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 18px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .session-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .info-value {
+            color: #333;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-badge.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-badge.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        #qrcodeContainer {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        #qrcodeContainer img {
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .instructions {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #666;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>📱 My WhatsApp Session</h1>
+                <p class="subtitle">Manage your session and callback</p>
+            </div>
+            <div class="user-info">
+                <div class="username">__USERNAME__</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📊 Session Status</h2>
+            <div id="statusMessage"></div>
+            <div class="session-info" id="sessionInfo">
+                <div class="info-row">
+                    <span class="info-label">Session Name:</span>
+                    <span class="info-value" id="sessionName">Loading...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Status:</span>
+                    <span id="sessionStatus">Loading...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Callback URL:</span>
+                    <span class="info-value" id="callbackUrl">Loading...</span>
+                </div>
+            </div>
+            
+            <div id="qrcodeContainer" style="display: none;">
+                <div class="instructions">
+                    <h3>📱 Scan QR Code with WhatsApp</h3>
+                    <ol>
+                        <li>Open WhatsApp on your phone</li>
+                        <li>Go to Settings → Linked Devices</li>
+                        <li>Tap "Link a Device"</li>
+                        <li>Scan this QR code</li>
+                    </ol>
+                </div>
+                <img id="qrcodeImage" src="" alt="QR Code">
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button id="btnConnect" onclick="connectSession()">🔗 Connect Session</button>
+                <button id="btnDisconnect" class="btn-danger" onclick="disconnectSession()" style="display: none;">❌ Disconnect Session</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🔔 Callback Configuration</h2>
+            <div id="callbackMessage"></div>
+            <form id="callbackForm">
+                <div class="form-group">
+                    <label for="callback_url_input">Webhook Callback URL</label>
+                    <input type="url" id="callback_url_input" name="callback_url" 
+                           placeholder="https://your-domain.com/webhook">
+                    <small style="color: #666; font-size: 12px;">Leave empty to disable webhook callbacks</small>
+                </div>
+                <button type="submit">💾 Update Callback URL</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const authHeader = 'Basic ' + btoa('__USERNAME__:' + prompt('Enter your password:'));
+        
+        function showMessage(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = '<div class="message ' + type + '">' + message + '</div>';
+            setTimeout(() => {
+                el.innerHTML = '';
+            }, 5000);
+        }
+        
+        async function loadSessionInfo() {
+            try {
+                const response = await fetch('/dashboard/session-info', {
+                    headers: {
+                        'Authorization': authHeader
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('sessionName').textContent = data.data.session_name;
+                    document.getElementById('callbackUrl').textContent = data.data.callback_url || 'Not configured';
+                    document.getElementById('callback_url_input').value = data.data.callback_url || '';
+                    
+                    const statusEl = document.getElementById('sessionStatus');
+                    if (data.data.is_connected) {
+                        statusEl.innerHTML = '<span class="status-badge connected">Connected</span>';
+                        document.getElementById('btnConnect').style.display = 'none';
+                        document.getElementById('btnDisconnect').style.display = 'inline-block';
+                        document.getElementById('qrcodeContainer').style.display = 'none';
+                    } else {
+                        statusEl.innerHTML = '<span class="status-badge disconnected">Disconnected</span>';
+                        document.getElementById('btnConnect').style.display = 'inline-block';
+                        document.getElementById('btnDisconnect').style.display = 'none';
+                    }
+                } else {
+                    showMessage('statusMessage', data.message || 'Failed to load session info', 'error');
+                }
+            } catch (error) {
+                showMessage('statusMessage', 'Error: ' + error.message, 'error');
+            }
+        }
+        
+        async function connectSession() {
+            document.getElementById('btnConnect').disabled = true;
+            document.getElementById('btnConnect').textContent = '🔄 Connecting...';
+            
+            try {
+                const response = await fetch('/dashboard/start-session', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': authHeader
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.data.qr) {
+                        // Show QR code
+                        document.getElementById('qrcodeImage').src = data.data.qr;
+                        document.getElementById('qrcodeContainer').style.display = 'block';
+                        showMessage('statusMessage', 'Scan the QR code with your WhatsApp app', 'success');
+                        
+                        // Poll for connection status
+                        const pollInterval = setInterval(async () => {
+                            await loadSessionInfo();
+                            const statusEl = document.getElementById('sessionStatus');
+                            if (statusEl.querySelector('.connected')) {
+                                clearInterval(pollInterval);
+                                showMessage('statusMessage', 'Session connected successfully!', 'success');
+                                document.getElementById('qrcodeContainer').style.display = 'none';
+                            }
+                        }, 3000);
+                    } else {
+                        showMessage('statusMessage', data.data.message, 'success');
+                        loadSessionInfo();
+                    }
+                } else {
+                    showMessage('statusMessage', data.message || 'Failed to connect session', 'error');
+                }
+            } catch (error) {
+                showMessage('statusMessage', 'Error: ' + error.message, 'error');
+            } finally {
+                document.getElementById('btnConnect').disabled = false;
+                document.getElementById('btnConnect').textContent = '🔗 Connect Session';
+            }
+        }
+        
+        async function disconnectSession() {
+            if (!confirm('Are you sure you want to disconnect your WhatsApp session?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/dashboard/disconnect-session', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': authHeader
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage('statusMessage', 'Session disconnected successfully!', 'success');
+                    loadSessionInfo();
+                } else {
+                    showMessage('statusMessage', data.message || 'Failed to disconnect session', 'error');
+                }
+            } catch (error) {
+                showMessage('statusMessage', 'Error: ' + error.message, 'error');
+            }
+        }
+        
+        document.getElementById('callbackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const callbackUrl = formData.get('callback_url');
+            
+            try {
+                const response = await fetch('/dashboard/callback', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': authHeader
+                    },
+                    body: JSON.stringify({
+                        callback_url: callbackUrl || null
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage('callbackMessage', 'Callback URL updated successfully!', 'success');
+                    loadSessionInfo();
+                } else {
+                    showMessage('callbackMessage', data.message || 'Failed to update callback URL', 'error');
+                }
+            } catch (error) {
+                showMessage('callbackMessage', 'Error: ' + error.message, 'error');
+            }
+        });
+        
+        // Load session info on page load
+        loadSessionInfo();
+        
+        // Refresh status every 10 seconds
+        setInterval(loadSessionInfo, 10000);
+    </script>
+</body>
+</html>

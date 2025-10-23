@@ -13,6 +13,8 @@ db.exec(`
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     is_admin INTEGER DEFAULT 0,
+    session_name TEXT,
+    callback_url TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 `);
@@ -39,6 +41,8 @@ export interface User {
   username: string;
   password: string;
   is_admin: number;
+  session_name: string | null;
+  callback_url: string | null;
   created_at: string;
 }
 
@@ -89,6 +93,29 @@ export const userDb = {
   // Verify password
   verifyPassword(password: string, hashedPassword: string): boolean {
     return bcrypt.compareSync(password, hashedPassword);
+  },
+
+  // Update user session name
+  updateUserSessionName(userId: number, sessionName: string): void {
+    db.prepare("UPDATE users SET session_name = ? WHERE id = ?").run(
+      sessionName,
+      userId
+    );
+  },
+
+  // Update user callback URL
+  updateUserCallbackUrl(userId: number, callbackUrl: string | null): void {
+    db.prepare("UPDATE users SET callback_url = ? WHERE id = ?").run(
+      callbackUrl,
+      userId
+    );
+  },
+
+  // Get user by session name
+  getUserBySessionName(sessionName: string): User | undefined {
+    return db
+      .prepare("SELECT * FROM users WHERE session_name = ?")
+      .get(sessionName) as User | undefined;
   },
 };
 

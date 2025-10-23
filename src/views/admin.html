@@ -180,6 +180,14 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required minlength="4">
                 </div>
+                <div class="form-group">
+                    <label for="session_name">Session Name (Optional)</label>
+                    <input type="text" id="session_name" name="session_name" placeholder="e.g., whatsapp-session">
+                </div>
+                <div class="form-group">
+                    <label for="callback_url">Callback URL (Optional)</label>
+                    <input type="url" id="callback_url" name="callback_url" placeholder="https://your-domain.com/webhook">
+                </div>
                 <button type="submit">Create User</button>
             </form>
         </div>
@@ -192,13 +200,15 @@
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
+                        <th>Session Name</th>
+                        <th>Callback URL</th>
                         <th>Created At</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="usersTableBody">
                     <tr>
-                        <td colspan="4" style="text-align: center;">Loading...</td>
+                        <td colspan="6" style="text-align: center;">Loading...</td>
                     </tr>
                 </tbody>
             </table>
@@ -241,10 +251,17 @@
                                 ${user.username}
                                 ${isAdmin ? '<span class="badge admin">ADMIN</span>' : ''}
                             </td>
+                            <td>
+                                ${!isAdmin ? (user.session_name || '<em>Not set</em>') : '-'}
+                            </td>
+                            <td>
+                                ${!isAdmin ? (user.callback_url ? `<a href="${user.callback_url}" target="_blank" style="color: #667eea; text-decoration: none;">View</a>` : '<em>Not set</em>') : '-'}
+                            </td>
                             <td>${new Date(user.created_at).toLocaleString()}</td>
                             <td>
                                 ${!isAdmin ? `
                                     <button class="btn-change-password" onclick="changePassword(${user.id}, '${user.username}')">Change Password</button>
+                                    <button class="btn-change-password" onclick="configureSession(${user.id}, '${user.username}', '${user.session_name || ''}', '${user.callback_url || ''}')">Configure Session</button>
                                     <button class="btn-delete" onclick="deleteUser(${user.id}, '${user.username}')">Delete</button>
                                 ` : '-'}
                             </td>
@@ -278,6 +295,25 @@
                 const result = await response.json();
                 
                 if (response.ok) {
+                    // Now configure session if provided
+                    const sessionName = formData.get('session_name');
+                    const callbackUrl = formData.get('callback_url');
+                    
+                    if (sessionName || callbackUrl) {
+                        const sessionConfig = {};
+                        if (sessionName) sessionConfig.session_name = sessionName;
+                        if (callbackUrl) sessionConfig.callback_url = callbackUrl;
+                        
+                        await fetch('/admin/users/' + result.data.id + '/session-config', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': authHeader
+                            },
+                            body: JSON.stringify(sessionConfig)
+                        });
+                    }
+                    
                     showMessage('createMessage', 'User created successfully!', 'success');
                     e.target.reset();
                     loadUsers();
@@ -338,6 +374,40 @@
                     showMessage('usersMessage', 'Password updated successfully!', 'success');
                 } else {
                     showMessage('usersMessage', result.message || 'Failed to update password', 'error');
+                }
+            } catch (error) {
+                showMessage('usersMessage', 'Error: ' + error.message, 'error');
+            }
+        }
+        
+        async function configureSession(id, username, currentSessionName, currentCallbackUrl) {
+            const newSessionName = prompt('Enter session name for "' + username + '":', currentSessionName);
+            if (newSessionName === null) return;
+            
+            const newCallbackUrl = prompt('Enter callback URL for "' + username + '" (leave empty to remove):', currentCallbackUrl);
+            if (newCallbackUrl === null) return;
+            
+            try {
+                const config = {};
+                if (newSessionName !== currentSessionName) config.session_name = newSessionName;
+                if (newCallbackUrl !== currentCallbackUrl) config.callback_url = newCallbackUrl || null;
+                
+                const response = await fetch('/admin/users/' + id + '/session-config', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': authHeader
+                    },
+                    body: JSON.stringify(config)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('usersMessage', 'Session configuration updated successfully!', 'success');
+                    loadUsers();
+                } else {
+                    showMessage('usersMessage', result.message || 'Failed to update session configuration', 'error');
                 }
             } catch (error) {
                 showMessage('usersMessage', 'Error: ' + error.message, 'error');

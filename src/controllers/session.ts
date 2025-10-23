@@ -18,20 +18,19 @@ export const createSessionController = () => {
     const user = c.get("user") as User;
     const allSessions = whatsapp.getAllSession();
     
-    // Admin can see all sessions, regular users only see their own
+    // Admin can see all sessions
     if (user.is_admin === 1) {
       return c.json({
         data: allSessions,
       });
     }
     
-    // Filter sessions for current user
-    const userSessions = allSessions.filter((session) => 
-      session.startsWith(user.username + "_")
-    );
+    // Regular users only see their single session
+    const sessionName = user.session_name || user.username;
+    const userSession = whatsapp.getSession(sessionName);
     
     return c.json({
-      data: userSessions,
+      data: userSession ? [sessionName] : [],
     });
   });
 
@@ -46,10 +45,11 @@ export const createSessionController = () => {
       const payload = c.req.valid("json");
       const user = c.get("user") as User;
 
-      // Add username prefix to session name for non-admin users
+      // For regular users, use their configured session name or username
+      // For admin users, allow custom session name from payload
       const sessionName = user.is_admin === 1 
         ? payload.session 
-        : user.username + "_" + payload.session;
+        : (user.session_name || user.username);
 
       const isExist = whatsapp.getSession(sessionName);
       if (isExist) {
@@ -91,10 +91,11 @@ export const createSessionController = () => {
       const payload = c.req.valid("query");
       const user = c.get("user") as User;
 
-      // Add username prefix to session name for non-admin users
+      // For regular users, use their configured session name or username
+      // For admin users, allow custom session name from payload
       const sessionName = user.is_admin === 1 
         ? payload.session 
-        : user.username + "_" + payload.session;
+        : (user.session_name || user.username);
 
       const isExist = whatsapp.getSession(sessionName);
       if (isExist) {
