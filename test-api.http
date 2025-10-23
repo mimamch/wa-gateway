@@ -1,0 +1,82 @@
+### Variables
+@baseUrl = http://localhost:5001
+@username = admin
+@password = admin
+@session = compras1
+@phoneNumber = 5521900000000
+
+### Send Image
+POST {{baseUrl}}/message/send-image
+Authorization: Basic {{username}}:{{password}}
+Content-Type: application/json
+
+{
+  "session": "{{session}}",
+  "to": "{{phoneNumber}}",
+  "text": "Check out this image!",
+  "image_url": "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg",
+  "is_group": false
+}
+
+### Send Image (Group)
+POST {{baseUrl}}/message/send-image
+Authorization: Basic {{username}}:{{password}}
+Content-Type: application/json
+
+{
+  "session": "{{session}}",
+  "to": "120363123456789012@g.us",
+  "text": "Image for the group",
+  "image_url": "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg",
+  "is_group": true
+}
+
+### Send Image (Local File - Replace with actual file path)
+POST {{baseUrl}}/message/send-image
+Authorization: Basic {{username}}:{{password}}
+Content-Type: application/json
+
+{
+  "session": "{{session}}",
+  "to": "{{phoneNumber}}",
+  "text": "Image from local file",
+  "image_url": "file://C:/path/to/image.jpg",
+  "is_group": false
+}
+
+### Send Text (for comparison)
+POST {{baseUrl}}/message/send-text
+Authorization: Basic {{username}}:{{password}}
+Content-Type: application/json
+
+{
+  "session": "{{session}}",
+  "to": "{{phoneNumber}}",
+  "text": "Hello from HTTP test!"
+}
+
+### Send Text with Reply (Quote Message)
+# Note: Replace "MESSAGE_ID_HERE" with actual message ID from webhook
+POST {{baseUrl}}/message/send-text
+Authorization: Basic {{username}}:{{password}}
+Content-Type: application/json
+
+{
+  "session": "{{session}}",
+  "to": "{{phoneNumber}}",
+  "text": "This is a reply to your message!",
+  "quoted_message_id": "AC1BFEE060D325F55FF5CB227BE18973"
+}
+
+### Send Image with Reply
+POST {{baseUrl}}/message/send-image
+Authorization: Basic {{username}}:{{password}}
+Content-Type: application/json
+
+{
+  "session": "{{session}}",
+  "to": "{{phoneNumber}}",
+  "text": "Here's an image in reply to your message",
+  "image_url": "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg",
+  "quoted_message_id": "MESSAGE_ID_HERE"
+}
