@@ -53,7 +53,9 @@ export const createDashboardController = () => {
     }
 
     const sessionName = user.session_name || user.username;
-    const isConnected = whatsapp.getSession(sessionName) !== null;
+    const session = whatsapp.getSession(sessionName);
+    // Check if session exists AND is authenticated (has user info)
+    const isConnected = !!(session?.user);
 
     return c.json({
       data: {
