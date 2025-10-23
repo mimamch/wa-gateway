@@ -1,0 +1,61 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Credentials (will be mounted as volume)
+wa_credentials
+
+# Media files (will be mounted as volume)
+media
+
+# Database (will be mounted as volume)
+db
+*.db
+*.db-shm
+*.db-wal
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+test-api.http
+*.test.*
+*.spec.*
+
+# Build artifacts
+dist
+build
+out
+
+# Logs
+logs
+*.log

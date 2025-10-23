@@ -216,7 +216,7 @@
     </div>
     
     <script>
-        const authHeader = 'Basic ' + btoa(prompt('Username:') + ':' + prompt('Password:'));
+        // No need to prompt for credentials - browser handles Basic Auth automatically
         
         function showMessage(elementId, message, type) {
             const el = document.getElementById(elementId);
@@ -229,9 +229,7 @@
         async function loadUsers() {
             try {
                 const response = await fetch('/admin/users', {
-                    headers: {
-                        'Authorization': authHeader
-                    }
+                    credentials: 'include'
                 });
                 
                 const data = await response.json();
@@ -286,9 +284,9 @@
                 const response = await fetch('/admin/users', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': authHeader
+                        'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify(data)
                 });
                 
@@ -307,9 +305,9 @@
                         await fetch('/admin/users/' + result.data.id + '/session-config', {
                             method: 'PUT',
                             headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': authHeader
+                                'Content-Type': 'application/json'
                             },
+                            credentials: 'include',
                             body: JSON.stringify(sessionConfig)
                         });
                     }
@@ -333,9 +331,7 @@
             try {
                 const response = await fetch('/admin/users/' + id, {
                     method: 'DELETE',
-                    headers: {
-                        'Authorization': authHeader
-                    }
+                    credentials: 'include'
                 });
                 
                 const result = await response.json();
@@ -362,9 +358,9 @@
                 const response = await fetch('/admin/users/' + id + '/password', {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': authHeader
+                        'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify({ password: newPassword })
                 });
                 
@@ -395,9 +391,9 @@
                 const response = await fetch('/admin/users/' + id + '/session-config', {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': authHeader
+                        'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify(config)
                 });
                 

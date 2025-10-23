@@ -1,0 +1,41 @@
+services:
+  wa-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wa-gateway
+    restart: unless-stopped
+    
+    ports:
+      - "3002:3002"
+    
+    environment:
+      - NODE_ENV=PRODUCTION
+      - PORT=3002
+      - KEY=${KEY:-}
+      - WEBHOOK_BASE_URL=${WEBHOOK_BASE_URL:-}
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - DB_PATH=/app/db/wa_gateway.db
+    
+    volumes:
+      # Mount WhatsApp credentials directory
+      - ./wa_credentials:/app/wa_credentials
+      # Mount media directory
+      - ./media:/app/media
+      # Mount database directory
+      - ./db:/app/db
+    
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3002/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    networks:
+      - wa-gateway-network
+
+networks:
+  wa-gateway-network:
+    driver: bridge

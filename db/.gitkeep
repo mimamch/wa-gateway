@@ -1,0 +1,16 @@
+# Database Directory
+
+This directory is used to store the SQLite database file when running in Docker.
+
+The database file (`wa_gateway.db`) will be created automatically on first run.
+
+## Docker Volume Mount
+
+When using Docker, this directory is mounted as a volume to persist data:
+
+```yaml
+volumes:
+  - ./db:/app/db
+```
+
+This ensures your database persists even when containers are stopped or removed.

@@ -279,7 +279,7 @@
     </div>
     
     <script>
-        const authHeader = 'Basic ' + btoa('__USERNAME__:' + prompt('Enter your password:'));
+        // No need to prompt for password - browser handles Basic Auth automatically
         
         function showMessage(elementId, message, type) {
             const el = document.getElementById(elementId);
@@ -292,9 +292,7 @@
         async function loadSessionInfo() {
             try {
                 const response = await fetch('/dashboard/session-info', {
-                    headers: {
-                        'Authorization': authHeader
-                    }
+                    credentials: 'include'
                 });
                 
                 const data = await response.json();
@@ -330,9 +328,7 @@
             try {
                 const response = await fetch('/dashboard/start-session', {
                     method: 'POST',
-                    headers: {
-                        'Authorization': authHeader
-                    }
+                    credentials: 'include'
                 });
                 
                 const data = await response.json();
@@ -377,9 +373,7 @@
             try {
                 const response = await fetch('/dashboard/disconnect-session', {
                     method: 'POST',
-                    headers: {
-                        'Authorization': authHeader
-                    }
+                    credentials: 'include'
                 });
                 
                 const data = await response.json();
@@ -405,9 +399,9 @@
                 const response = await fetch('/dashboard/callback', {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': authHeader
+                        'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify({
                         callback_url: callbackUrl || null
                     })

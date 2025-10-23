@@ -3,8 +3,7 @@ import path from "path";
 import bcrypt from "bcrypt";
 import { env } from "../env";
 
-const dbPath = path.join(process.cwd(), "wa_gateway.db");
-const db = new Database(dbPath);
+const db = new Database(env.DB_PATH);
 
 // Create tables
 db.exec(`
