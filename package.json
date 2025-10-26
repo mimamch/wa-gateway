@@ -1,4 +1,5 @@
 {
+  "packageManager": "pnpm@9.0.0",
   "name": "wa-gateway",
   "version": "4.3.2",
   "scripts": {
