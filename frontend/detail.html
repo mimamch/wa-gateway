@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Session - WA Gateway</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
+            </a>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3"><i class="bi bi-person-circle"></i> Admin</span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Session Info -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4><i class="bi bi-info-circle"></i> Informasi Session</h4>
+                            <span class="badge" id="statusBadge">Loading...</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Nama Session:</strong> <span id="sessionName">-</span></p>
+                                <p><strong>Profile Name:</strong> <span id="profileName">-</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Nomor WA:</strong> <span id="waNumber">-</span></p>
+                                <p><strong>Dibuat:</strong> <span id="createdAt">-</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code Section -->
+                <div class="card mb-4" id="qrSection">
+                    <div class="card-body text-center">
+                        <h5><i class="bi bi-qr-code"></i> QR Code</h5>
+                        <p class="text-muted">Scan QR Code untuk menghubungkan WhatsApp</p>
+                        <div id="qrCodeContainer">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Webhook Configuration -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5><i class="bi bi-link-45deg"></i> Konfigurasi Webhook</h5>
+                        <form id="webhookForm">
+                            <div class="mb-3">
+                                <label class="form-label">Webhook URL</label>
+                                <input type="url" class="form-control" id="webhookUrl" placeholder="https://yourdomain.com/webhook">
+                            </div>
+                            
+                            <h6 class="mb-3">Webhook Events</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookIndividual">
+                                        <label class="form-check-label" for="webhookIndividual">
+                                            Individual Messages
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookGroup">
+                                        <label class="form-check-label" for="webhookGroup">
+                                            Group Messages
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookFromMe">
+                                        <label class="form-check-label" for="webhookFromMe">
+                                            From Me
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookUpdateStatus">
+                                        <label class="form-check-label" for="webhookUpdateStatus">
+                                            Update Status
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookImage">
+                                        <label class="form-check-label" for="webhookImage">
+                                            Image
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookVideo">
+                                        <label class="form-check-label" for="webhookVideo">
+                                            Video
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookAudio">
+                                        <label class="form-check-label" for="webhookAudio">
+                                            Audio
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookSticker">
+                                        <label class="form-check-label" for="webhookSticker">
+                                            Sticker
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="webhookDocument">
+                                        <label class="form-check-label" for="webhookDocument">
+                                            Document
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary mt-3">
+                                <i class="bi bi-save"></i> Save Webhook
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <!-- API Key -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5><i class="bi bi-key"></i> API Key</h5>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="apiKey" readonly>
+                            <button class="btn btn-outline-secondary" onclick="copyApiKey()">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-warning btn-sm w-100" onclick="regenerateApiKey()">
+                            <i class="bi bi-arrow-repeat"></i> Regenerate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Test Message -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5><i class="bi bi-chat-dots"></i> Test Message</h5>
+                        <form id="testMessageForm">
+                            <div class="mb-3">
+                                <label class="form-label">Nomor Tujuan</label>
+                                <input type="text" class="form-control" id="testPhoneNumber" placeholder="628123456789" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Pesan</label>
+                                <textarea class="form-control" id="testMessage" rows="3" placeholder="Tulis pesan..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-send"></i> Kirim
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Delete Session -->
+                <div class="card border-danger">
+                    <div class="card-body">
+                        <h5 class="text-danger"><i class="bi bi-trash"></i> Danger Zone</h5>
+                        <p class="text-muted small">Hapus session ini secara permanen</p>
+                        <button class="btn btn-danger w-100" onclick="deleteSession()">
+                            <i class="bi bi-trash"></i> Hapus Session
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="successToast" class="toast" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="successMessage"></div>
+        </div>
+        
+        <div id="errorToast" class="toast" role="alert">
+            <div class="toast-header bg-danger text-white">
+                <i class="bi bi-exclamation-circle me-2"></i>
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/detail.js"></script>
+</body>
+</html>
