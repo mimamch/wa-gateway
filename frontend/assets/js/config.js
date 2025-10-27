@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = "https://projek-n8n-wa-gateaway.qk6yxt.easypanel.host";
 
 // Helper function to get token
 function getToken() {
