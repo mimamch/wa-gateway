@@ -1,0 +1,67 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.session-card {
+    transition: transform 0.2s;
+}
+
+.session-card:hover {
+    transform: translateY(-5px);
+}
+
+.badge {
+    padding: 8px 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.btn {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.form-control {
+    border-radius: 8px;
+}
+
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+}
+
+.modal-content {
+    border-radius: 15px;
+}
+
+.toast {
+    border-radius: 10px;
+}
