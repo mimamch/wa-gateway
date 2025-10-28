@@ -1,0 +1,21 @@
+services:
+  wa-gateway:
+    build: .
+    container_name: wa-gateway
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=${NODE_ENV:production}
+      - PORT=${PORT:5001}
+      - KEY=${KEY:-}
+      - WEBHOOK_BASE_URL=${WEBHOOK_BASE_URL:-}
+    volumes:
+      - ./media:/app/media
+      - ./sessions:/app/sessions
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5001/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
