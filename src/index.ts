@@ -7,7 +7,7 @@ import { notFoundMiddleware } from "./middlewares/notfound.middleware";
 import { serve } from "@hono/node-server";
 import { env } from "./env";
 import { createSessionController } from "./controllers/session";
-import * as whastapp from "wa-multi-session";
+import * as whatsapp from "wa-multi-session";
 import { createMessageController } from "./controllers/message";
 import { CreateWebhookProps } from "./webhooks";
 import { createWebhookMessage } from "./webhooks/message";
@@ -62,7 +62,7 @@ serve(
   }
 );
 
-whastapp.onConnected((session) => {
+whatsapp.onConnected((session) => {
   console.log(`session: '${session}' connected`);
 });
 
@@ -73,24 +73,24 @@ if (env.WEBHOOK_BASE_URL) {
   };
 
   // message webhook
-  whastapp.onMessageReceived(createWebhookMessage(webhookProps));
+  whatsapp.onMessageReceived(createWebhookMessage(webhookProps));
 
   // session webhook
   const webhookSession = createWebhookSession(webhookProps);
 
-  whastapp.onConnected((session) => {
+  whatsapp.onConnected((session) => {
     console.log(`session: '${session}' connected`);
     webhookSession({ session, status: "connected" });
   });
-  whastapp.onConnecting((session) => {
+  whatsapp.onConnecting((session) => {
     console.log(`session: '${session}' connecting`);
     webhookSession({ session, status: "connecting" });
   });
-  whastapp.onDisconnected((session) => {
+  whatsapp.onDisconnected((session) => {
     console.log(`session: '${session}' disconnected`);
     webhookSession({ session, status: "disconnected" });
   });
 }
 // End Implement Webhook
 
-whastapp.loadSessionsFromStorage();
+whatsapp.loadSessionsFromStorage();
