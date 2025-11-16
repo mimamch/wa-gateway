@@ -34,6 +34,8 @@ services:
       - ./wa_credentials:/app/wa_credentials
     ports:
       - "5001:5001"
+    environment:
+      - KEY= # make your own api key (optional)
 ```
 
 ### 2. Start the container
