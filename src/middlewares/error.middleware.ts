@@ -19,7 +19,7 @@ export const globalErrorMiddleware: ErrorHandler = (err, c) => {
   }
 
   console.error("APP ERROR:", err);
-  if (env.NODE_ENV == "PRODUCTION")
+  if (env.NODE_ENV == "production")
     err.message = "Something went wrong, please try again later!";
   return c.json({ message: err.message }, 500);
 };

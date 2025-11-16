@@ -1,0 +1,9 @@
+# docker-compose.yaml
+services:
+  wa-gateway:
+    container_name: "wa-gateway"
+    image: mimamch/wa-gateway:latest
+    volumes:
+      - ./wa_credentials:/app/wa_credentials
+    ports:
+      - "5001:5001"
