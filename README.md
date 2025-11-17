@@ -81,18 +81,7 @@ Example to send a text message:
 http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=Hello
 ```
 
----
 
-## Upgrading
-
-To update to the latest version:
-
-```bash
-cd ~/app/wa-gateway
-docker compose pull
-docker compose down
-docker compose up -d
-```
 
 ---
 
@@ -182,17 +171,17 @@ http://localhost:5001/media/FILE_NAME
 
 ---
 
+
 ## Upgrading
 
 To update to the latest version:
 
 ```bash
-docker pull mimamch/wa-gateway:latest
+cd ~/app/wa-gateway
+docker compose pull
 docker compose down
 docker compose up -d
 ```
-
----
 
 ## Documentation
 
