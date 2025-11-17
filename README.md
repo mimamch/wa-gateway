@@ -20,9 +20,24 @@ A headless multi-session WhatsApp gateway with multi-device support, easy to set
 
 ## Installation & Running
 
-### 1. Create `docker-compose.yaml`
+### 1. Create Application Folder
 
-Create a file named `docker-compose.yaml` with the following content:
+Create a new folder for your application at `~/app/wa-gateway` and navigate into it:
+
+```bash
+mkdir -p ~/app/wa-gateway
+cd ~/app/wa-gateway
+```
+
+### 2. Create `docker-compose.yaml`
+
+Use the `nano` editor to create the file:
+
+```bash
+nano docker-compose.yaml
+```
+
+Paste the following content into the editor to create `docker-compose.yaml`
 
 ```yaml
 # docker-compose.yaml
@@ -38,7 +53,7 @@ services:
       - KEY= # make your own api key (optional)
 ```
 
-### 2. Start the container
+### 3. Start the container
 
 Run the following command in the same directory as your `docker-compose.yaml`:
 
@@ -46,7 +61,7 @@ Run the following command in the same directory as your `docker-compose.yaml`:
 docker compose up -d
 ```
 
-### 3. Open Browser & Scan QR Code
+### 4. Open Browser & Scan QR Code
 
 Visit this URL to scan the QR code from your WhatsApp device:
 
@@ -54,14 +69,29 @@ Visit this URL to scan the QR code from your WhatsApp device:
 http://localhost:5001/session/start?session=mysession
 ```
 
+> Replace `localhost` with your server's IP or domain if not running locally.
+
 > Replace `mysession` with your desired session name.
 
-### 4. Send Your First Message
+### 5. Send Your First Message
 
 Example to send a text message:
 
 ```
 http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=Hello
+```
+
+---
+
+## Upgrading
+
+To update to the latest version:
+
+```bash
+cd ~/app/wa-gateway
+docker compose pull
+docker compose down
+docker compose up -d
 ```
 
 ---
