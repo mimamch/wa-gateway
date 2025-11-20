@@ -14,6 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Extract version from package.json
+      id: package_version
+      run: |
+        VERSION=$(jq -r .version package.json)
+        
+        echo "Detected version: $VERSION"
+        
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
     
     - name: Log in to Docker Hub
       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -28,6 +37,7 @@ jobs:
         images: mimamch/wa-gateway
         tags: |
           type=raw,value={{date 'YYYYMMDD-HHmmss' tz='Asia/Jakarta'}}
+          type=raw,value={{ steps.package_version.outputs.version }},enable={{is_default_branch}}
           type=raw,value=latest,enable={{is_default_branch}}
 
     - name: Build and push Docker image
