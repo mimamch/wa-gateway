@@ -33,11 +33,13 @@ jobs:
     - name: Extract metadata (tags, labels) for Docker
       id: meta
       uses: docker/metadata-action@v5
+      env:
+        VERSION: ${{ steps.package_version.outputs.version }}
       with:
         images: mimamch/wa-gateway
         tags: |
           type=raw,value={{date 'YYYYMMDD-HHmmss' tz='Asia/Jakarta'}}
-          type=raw,value={{ steps.package_version.outputs.version }},enable={{is_default_branch}}
+          type=raw,value={{ env.VERSION }},enable={{is_default_branch}}
           type=raw,value=latest,enable={{is_default_branch}}
 
     - name: Build and push Docker image
