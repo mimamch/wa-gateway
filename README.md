@@ -47,6 +47,7 @@ services:
     image: mimamch/wa-gateway:latest
     volumes:
       - ./wa_credentials:/app/wa_credentials
+      - ./media:/app/media
     ports:
       - "5001:5001"
     environment:
@@ -80,8 +81,6 @@ Example to send a text message:
 ```
 http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=Hello
 ```
-
-
 
 ---
 
@@ -170,7 +169,6 @@ http://localhost:5001/media/FILE_NAME
 ```
 
 ---
-
 
 ## Upgrading
 

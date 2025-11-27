@@ -5,6 +5,7 @@ services:
     image: mimamch/wa-gateway:latest
     volumes:
       - ./wa_credentials:/app/wa_credentials
+      - ./media:/app/media
     ports:
       - "5001:5001"
     environment:
