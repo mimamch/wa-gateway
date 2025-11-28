@@ -161,6 +161,49 @@ export const createMessageController = () => {
   );
 
   app.post(
+    "/send-video",
+    createKeyMiddleware(),
+    requestValidator(
+      "json",
+      z.object({
+        session: z.string(),
+        to: z.string(),
+        text: z.string().optional(),
+        video_url: z.string(),
+        is_group: z.boolean().optional(),
+      })
+    ),
+    async (c) => {
+      const payload = c.req.valid("json");
+      const isExist = whatsapp.getSession(payload.session);
+      if (!isExist) {
+        throw new HTTPException(400, {
+          message: "Session does not exist",
+        });
+      }
+
+      await whatsapp.sendTyping({
+        sessionId: payload.session,
+        to: payload.to,
+        duration: Math.min(5000, (payload.text || "").length * 100),
+        isGroup: payload.is_group,
+      });
+
+      const response = await whatsapp.sendVideo({
+        sessionId: payload.session,
+        to: payload.to,
+        text: payload.text || "",
+        media: payload.video_url,
+        isGroup: payload.is_group,
+      });
+
+      return c.json({
+        data: response,
+      });
+    }
+  );
+
+  app.post(
     "/send-sticker",
     createKeyMiddleware(),
     requestValidator(

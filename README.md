@@ -4,7 +4,7 @@ A headless multi-session WhatsApp gateway with multi-device support, easy to set
 
 - Multi-device support
 - Multi-session / multiple phone numbers
-- Send text messages, images, and documents
+- Send text messages, images, videos, and documents
 - Webhook integration
 
 📌 Also see: [wa-multi-session](https://github.com/mimamch/wa-multi-session)
@@ -136,6 +136,22 @@ Body includes:
 
 - `document_url`
 - `document_name`
+
+### Send Video
+
+```bash
+POST /message/send-video
+```
+
+Body fields:
+
+| Field    | Type    | Required | Description                             |
+| -------- | ------- | -------- | --------------------------------------- |
+| session  | string  | Yes      | The session name you created            |
+| to       | string  | Yes      | Target phone number (e.g. 628123456789) |
+| text     | string  | No       | Caption for the video (optional)        |
+| video_url| string  | Yes      | URL of the video file                   |
+| is_group | boolean | No       | True if target is a group               |
 
 ### Delete Session
 
