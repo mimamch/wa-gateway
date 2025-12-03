@@ -44,6 +44,7 @@ Paste the following content into the editor to create `docker-compose.yaml`
 services:
   wa-gateway:
     container_name: "wa-gateway"
+    restart: unless-stopped
     image: mimamch/wa-gateway:latest
     volumes:
       - ./wa_credentials:/app/wa_credentials
@@ -145,13 +146,13 @@ POST /message/send-video
 
 Body fields:
 
-| Field    | Type    | Required | Description                             |
-| -------- | ------- | -------- | --------------------------------------- |
-| session  | string  | Yes      | The session name you created            |
-| to       | string  | Yes      | Target phone number (e.g. 628123456789) |
-| text     | string  | No       | Caption for the video (optional)        |
-| video_url| string  | Yes      | URL of the video file                   |
-| is_group | boolean | No       | True if target is a group               |
+| Field     | Type    | Required | Description                             |
+| --------- | ------- | -------- | --------------------------------------- |
+| session   | string  | Yes      | The session name you created            |
+| to        | string  | Yes      | Target phone number (e.g. 628123456789) |
+| text      | string  | No       | Caption for the video (optional)        |
+| video_url | string  | Yes      | URL of the video file                   |
+| is_group  | boolean | No       | True if target is a group               |
 
 ### Delete Session
 

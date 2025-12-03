@@ -2,6 +2,7 @@
 services:
   wa-gateway:
     container_name: "wa-gateway"
+    restart: unless-stopped
     image: mimamch/wa-gateway:latest
     volumes:
       - ./wa_credentials:/app/wa_credentials
