@@ -14,6 +14,7 @@ import { createWebhookMessage } from "./webhooks/message";
 import { createWebhookSession } from "./webhooks/session";
 import { createProfileController } from "./controllers/profile";
 import { serveStatic } from "@hono/node-server/serve-static";
+import { createHealthController } from "./controllers/health";
 
 const app = new Hono();
 
@@ -40,15 +41,20 @@ app.use(
 /**
  * session routes
  */
-app.route("/session", createSessionController());
+app.route("/", createSessionController());
 /**
  * message routes
  */
-app.route("/message", createMessageController());
+app.route("/", createMessageController());
 /**
  * profile routes
  */
-app.route("/profile", createProfileController());
+app.route("/", createProfileController());
+
+/**
+ * health routes
+ */
+app.route("/", createHealthController());
 
 const port = env.PORT;
 
