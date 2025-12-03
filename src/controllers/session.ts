@@ -1,10 +1,10 @@
-import * as whatsapp from "wa-multi-session";
 import { Hono } from "hono";
 import { requestValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
 import { HTTPException } from "hono/http-exception";
+import { whatsapp } from "../whatsapp";
 
 export const createSessionController = () => {
   const startSessionSchema = z.object({
@@ -21,7 +21,7 @@ export const createSessionController = () => {
      */
     .get("/", createKeyMiddleware(), async (c) => {
       return c.json({
-        data: whatsapp.getAllSession(),
+        data: whatsapp.getSessionsIds(),
       });
     })
     /**
@@ -36,7 +36,7 @@ export const createSessionController = () => {
       async (c) => {
         const payload = c.req.valid("json");
 
-        const isExist = whatsapp.getSession(payload.session);
+        const isExist = await whatsapp.getSessionById(payload.session);
         if (isExist) {
           throw new HTTPException(400, {
             message: "Session already exist",
@@ -80,7 +80,7 @@ export const createSessionController = () => {
       async (c) => {
         const payload = c.req.valid("query");
 
-        const isExist = whatsapp.getSession(payload.session);
+        const isExist = await whatsapp.getSessionById(payload.session);
         if (isExist) {
           throw new HTTPException(400, {
             message: "Session already exist",

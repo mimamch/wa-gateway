@@ -9,6 +9,7 @@ type WebhookSessionBody = {
 
 export const createWebhookSession =
   (props: CreateWebhookProps) => async (event: WebhookSessionBody) => {
+    if (!props.baseUrl) return;
     const endpoint = `${props.baseUrl}/session`;
 
     const body = {
