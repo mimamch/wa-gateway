@@ -2,7 +2,7 @@ import axios from "axios";
 import { env } from "../env";
 
 export type CreateWebhookProps = {
-  baseUrl: string;
+  baseUrl?: string;
 };
 
 export const webhookClient = axios.create({

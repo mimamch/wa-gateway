@@ -1,9 +1,9 @@
-import * as whatsapp from "wa-multi-session";
 import { Hono } from "hono";
 import { requestValidator } from "../middlewares/validation.middleware";
 import { z } from "zod";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { HTTPException } from "hono/http-exception";
+import { whatsapp } from "../whatsapp";
 
 export const createProfileController = () => {
   const getProfileSchema = z.object({
@@ -29,7 +29,7 @@ export const createProfileController = () => {
       requestValidator("json", getProfileSchema),
       async (c) => {
         const payload = c.req.valid("json");
-        const isExist = whatsapp.getSession(payload.session);
+        const isExist = await whatsapp.getSessionById(payload.session);
         if (!isExist) {
           throw new HTTPException(400, {
             message: "Session does not exist",
@@ -49,7 +49,7 @@ export const createProfileController = () => {
         }
 
         return c.json({
-          data: await whatsapp.getProfileInfo({
+          data: await whatsapp.getProfile({
             sessionId: payload.session,
             target: payload.target,
           }),

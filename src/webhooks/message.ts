@@ -1,4 +1,4 @@
-import { MessageReceived } from "wa-multi-session";
+import type { MessageReceived } from "wa-multi-session";
 import { CreateWebhookProps, webhookClient } from ".";
 import {
   handleWebhookAudioMessage,
