@@ -14,6 +14,7 @@ const webhookMessage = createWebhookMessage(webhookProps);
 
 export const whatsapp = new Whatsapp({
   adapter: new SQLiteAdapter(),
+  debugLevel: "info",
 
   onConnecting(sessionId) {
     console.log(`[${sessionId}] connecting`);
