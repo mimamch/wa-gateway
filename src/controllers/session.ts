@@ -21,7 +21,7 @@ export const createSessionController = () => {
      */
     .get("/", createKeyMiddleware(), async (c) => {
       return c.json({
-        data: whatsapp.getSessionsIds(),
+        data: await whatsapp.getSessionsIds(),
       });
     })
     /**
