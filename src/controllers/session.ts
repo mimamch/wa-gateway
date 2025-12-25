@@ -5,6 +5,9 @@ import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
 import { HTTPException } from "hono/http-exception";
 import { whatsapp } from "../whatsapp";
+import fs from "fs";
+import path from "path";
+
 
 export const createSessionController = () => {
   const startSessionSchema = z.object({
@@ -124,13 +127,36 @@ export const createSessionController = () => {
      *
      */
     .all("/logout", createKeyMiddleware(), async (c) => {
-      await whatsapp.deleteSession(
-        c.req.query().session || (await c.req.json()).session || ""
-      );
+      const session =
+        c.req.query().session ||
+        (c.req.header("content-type")?.includes("json")
+          ? (await c.req.json()).session
+          : "");
+
+      if (!session) {
+        throw new HTTPException(400, { message: "Session required" });
+      }
+
+      await forceDeleteSession(session);
+
       return c.json({
-        data: "success",
+        success: true,
+        message: "Session deleted completely",
       });
     });
+
+
+    async function forceDeleteSession(session: string) {
+      // 1. Hapus dari whatsapp manager
+      await whatsapp.deleteSession(session);
+
+      // 2. Hapus folder auth (SESUIKAN PATH)
+      const sessionPath = path.join(process.cwd(), "sessions", session);
+
+      if (fs.existsSync(sessionPath)) {
+        fs.rmSync(sessionPath, { recursive: true, force: true });
+      }
+    }
 
   return app;
 };
