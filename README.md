@@ -206,3 +206,6 @@ For full documentation, examples, and guides, visit:
 ---
 
 Let me know if you need configuration examples with environment variables (like webhook setup) or a multi-service deployment!
+
+## Need Help?
+Get in touch with me in person via email 📧 [mimamch28@gmail.com](mailto:mimamch28@gmail.com)
