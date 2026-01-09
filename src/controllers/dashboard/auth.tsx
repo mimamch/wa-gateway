@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import AuthIndex from "../../views/auth";
 import { env } from "../../env";
-import { setCookie } from "hono/cookie";
+import { setSignedCookie } from "hono/cookie";
 
 export const createAuthController = () => {
   const app = new Hono()
@@ -17,9 +17,15 @@ export const createAuthController = () => {
 
       if (password === AUTH_KEY) {
         // set key to cookie
-        setCookie(c, "key", password, {
-          httpOnly: true,
-        });
+        await setSignedCookie(
+          c,
+          "key",
+          password,
+          "14e9f106-9860-4219-ae63-d34e4f5127bd",
+          {
+            httpOnly: true,
+          }
+        );
         return c.redirect("/dashboard");
       }
 
