@@ -4,7 +4,14 @@ import DashboardIndex from "../../views/dashboard";
 
 export const createDashboardController = () => {
   const app = new Hono()
+    .get("/", (c) => c.redirect("/dashboard")) // redirect to /dashboard
+
+    /**
+     * dashboard routes
+     * prefix: /dashboard
+     */
     .basePath("/dashboard")
+
     .get("/", createDashboardMiddleware(), async (c) => {
       return c.render(<DashboardIndex />);
     });

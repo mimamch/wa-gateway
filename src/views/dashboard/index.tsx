@@ -21,7 +21,7 @@ const DashboardIndex: FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           <a
             href="/dashboard/sessions"
-            className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex flex-col items-start justify-center gap-4 group"
+            className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex flex-col items-start justify-center gap-4 group"
           >
             <div className="bg-green-100 p-2 rounded-full text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
               <svg

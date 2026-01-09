@@ -5,7 +5,13 @@ import { setSignedCookie } from "hono/cookie";
 
 export const createAuthController = () => {
   const app = new Hono()
+
+    /**
+     * auth routes
+     * prefix: /auth
+     */
     .basePath("/auth")
+
     .get("/login", async (c) => {
       return c.render(<AuthIndex />);
     })
