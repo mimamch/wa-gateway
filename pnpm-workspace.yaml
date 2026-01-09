@@ -1,0 +1,9 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - baileys
+  - esbuild
+  - protobufjs
+  - sharp
+
+onlyBuiltDependencies:
+  - sqlite3

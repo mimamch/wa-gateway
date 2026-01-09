@@ -11,6 +11,8 @@ import { createMessageController } from "./controllers/message";
 import { createProfileController } from "./controllers/profile";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { createHealthController } from "./controllers/health";
+import { createAuthController } from "./controllers/dashboard/auth";
+import { createDashboardController } from "./controllers/dashboard/dashboard";
 
 const app = new Hono();
 
@@ -33,6 +35,12 @@ app.use(
     root: "./",
   })
 );
+app.use(
+  "/assets/*",
+  serveStatic({
+    root: "./",
+  })
+);
 
 /**
  * session routes
@@ -51,6 +59,15 @@ app.route("/", createProfileController());
  * health routes
  */
 app.route("/", createHealthController());
+
+/**
+ * auth routes
+ */
+app.route("/", createAuthController());
+/**
+ * dashboard routes
+ */
+app.route("/", createDashboardController());
 
 const port = env.PORT;
 

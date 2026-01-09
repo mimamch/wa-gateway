@@ -3,6 +3,8 @@
   "version": "4.5.1",
   "scripts": {
     "dev": "tsx watch src/index.ts",
+    "build:css": "tailwindcss -i ./src/globals.css  -o ./assets/style.css --watch",
+    "dev:ui": "concurrently \"tsx watch src/index.ts\" \"tailwindcss -i ./src/globals.css -o ./assets/style.css --watch\"",
     "start": "tsx src/index.ts"
   },
   "author": {
@@ -14,6 +16,7 @@
     "@hono/node-server": "^1.13.7",
     "@hono/zod-validator": "^0.4.1",
     "axios": "^1.8.2",
+    "concurrently": "^9.2.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -34,7 +37,9 @@
     "url": "git@github.com:mimamch/wa-gateway.git"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
     "@types/node": "^22.10.1",
-    "@types/qrcode": "^1.5.5"
+    "@types/qrcode": "^1.5.5",
+    "tailwindcss": "^4.1.18"
   }
 }
