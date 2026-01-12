@@ -4,6 +4,17 @@ import { env } from "./env";
 import { CreateWebhookProps } from "./webhooks";
 import { createWebhookMessage } from "./webhooks/message";
 
+export const whatsappStatuses = new Map<
+  string,
+  {
+    status: "connecting" | "connected" | "disconnected";
+    details?: {
+      name?: string;
+      phoneNumber?: string;
+    };
+  }
+>();
+
 const webhookProps: CreateWebhookProps = {
   baseUrl: env.WEBHOOK_BASE_URL,
 };
@@ -16,14 +27,29 @@ export const whatsapp = new Whatsapp({
   adapter: new SQLiteAdapter(),
 
   onConnecting(sessionId) {
+    whatsappStatuses.set(sessionId, {
+      details: whatsappStatuses.get(sessionId)?.details,
+      status: "connecting",
+    });
+
     console.log(`[${sessionId}] connecting`);
     webhookSession({ session: sessionId, status: "connecting" });
   },
-  onConnected(sessionId) {
+  async onConnected(sessionId) {
+    whatsappStatuses.set(sessionId, {
+      details: whatsappStatuses.get(sessionId)?.details,
+      status: "connected",
+    });
+
     console.log(`[${sessionId}] connected`);
     webhookSession({ session: sessionId, status: "connected" });
   },
   onDisconnected(sessionId) {
+    whatsappStatuses.set(sessionId, {
+      details: whatsappStatuses.get(sessionId)?.details,
+      status: "disconnected",
+    });
+
     console.log(`[${sessionId}] disconnected`);
     webhookSession({ session: sessionId, status: "disconnected" });
   },

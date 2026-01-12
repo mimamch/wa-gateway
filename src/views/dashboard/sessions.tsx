@@ -1,20 +1,21 @@
-import { FC, MouseEvent, useCallback } from "hono/jsx";
+import { FC } from "hono/jsx";
 import RootLayout from "../layout";
+import { randomUUID } from "crypto";
 
 const SessionPage: FC<{
   sessions: {
-    id: string;
+    session: string;
+    status?: string;
+    details?: {
+      phoneNumber?: string;
+      name?: string;
+    };
   }[];
 }> = (props) => {
-  const handleCreateSession = useCallback((e: MouseEvent) => {
-    e.preventDefault();
-    const sessionName = prompt("Enter session name:");
-  }, []);
-
   return (
     <RootLayout title="Sessions">
       <div className="max-w-7xl mx-auto p-6">
-        <div onClick={handleCreateSession}>
+        <div>
           <h1 className="text-2xl font-bold">Sessions</h1>
           <p className="text-gray-500 text-sm">
             View and manage your WhatsApp sessions
@@ -23,8 +24,7 @@ const SessionPage: FC<{
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
           <a
-            href="#"
-            onClick={handleCreateSession}
+            href={`sessions/create?id=${randomUUID()}`}
             className="bg-green-200/80 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-green-200 flex flex-col items-start justify-center gap-4"
           >
             <div className="bg-green-100 p-2 rounded-full text-green-600">
@@ -50,8 +50,9 @@ const SessionPage: FC<{
 
           {/* Session cards */}
           {props.sessions.map((session) => (
-            <div
-              key={session.id}
+            <a
+              key={session.session}
+              href={`sessions/create?id=${session.session}`}
               className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex flex-col items-start justify-center gap-4"
             >
               <div className="bg-green-100 p-2 rounded-full text-green-600">
@@ -71,10 +72,12 @@ const SessionPage: FC<{
                 </svg>
               </div>
               <div className="text-start">
-                <h2 className="text-xl font-semibold">{session.id}</h2>
-                <p className="text-gray-500 text-sm">Status: Connected</p>
+                <h2 className="text-xl font-semibold">{session.session}</h2>
+                <p className="text-gray-500 text-sm">
+                  Status: {session.status?.toUpperCase()}
+                </p>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
