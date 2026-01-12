@@ -77,6 +77,21 @@ const SessionPage: FC<{
                   Status: {session.status?.toUpperCase()}
                 </p>
               </div>
+
+              {!!session.details && (
+                <div>
+                  {!!session.details.name && (
+                    <p className="text-gray-700 text-sm">
+                      Name: {session.details.name}
+                    </p>
+                  )}
+                  {!!session.details.phoneNumber && (
+                    <p className="text-gray-700 text-sm">
+                      Phone: {session.details.phoneNumber}
+                    </p>
+                  )}
+                </div>
+              )}
             </a>
           ))}
         </div>

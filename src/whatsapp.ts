@@ -36,9 +36,15 @@ export const whatsapp = new Whatsapp({
     webhookSession({ session: sessionId, status: "connecting" });
   },
   async onConnected(sessionId) {
+    const session = await whatsapp.getSessionById(sessionId);
+    const user = session?.sock?.user;
+
     whatsappStatuses.set(sessionId, {
-      details: whatsappStatuses.get(sessionId)?.details,
       status: "connected",
+      details: {
+        name: user?.name || "",
+        phoneNumber: user?.id?.split(":")[0] || "",
+      },
     });
 
     console.log(`[${sessionId}] connected`);
