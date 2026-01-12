@@ -14,69 +14,64 @@ import { createHealthController } from "./controllers/health";
 import { createAuthController } from "./controllers/dashboard/auth";
 import { createDashboardController } from "./controllers/dashboard/dashboard";
 
-const app = new Hono();
+const app = new Hono()
+  .use(
+    logger((...params) => {
+      params.map((e) => console.log(`${moment().toISOString()} | ${e}`));
+    })
+  )
+  .use(cors())
 
-app.use(
-  logger((...params) => {
-    params.map((e) => console.log(`${moment().toISOString()} | ${e}`));
-  })
-);
-app.use(cors());
+  .onError(globalErrorMiddleware)
+  .notFound(notFoundMiddleware)
 
-app.onError(globalErrorMiddleware);
-app.notFound(notFoundMiddleware);
+  /**
+   * serve media message static files
+   */
 
-/**
- * serve media message static files
- */
-app.use(
-  "/media/*",
-  serveStatic({
-    root: "./",
-  })
-);
-app.use(
-  "/assets/*",
-  serveStatic({
-    root: "./",
-  })
-);
+  .use(
+    "/media/*",
+    serveStatic({
+      root: "./",
+    })
+  )
+  .use(
+    "/assets/*",
+    serveStatic({
+      root: "./",
+    })
+  )
 
-/**
- * session routes
- */
-app.route("/", createSessionController());
-/**
- * message routes
- */
-app.route("/", createMessageController());
-/**
- * profile routes
- */
-app.route("/", createProfileController());
+  /**
+   * session routes
+   */
+  .route("/", createSessionController())
+  /**
+   * message routes
+   */
+  .route("/", createMessageController())
+  /**
+   * profile routes
+   */
+  .route("/", createProfileController())
 
-/**
- * health routes
- */
-app.route("/", createHealthController());
+  /**
+   * health routes
+   */
+  .route("/", createHealthController())
 
-/**
- * auth routes
- */
-app.route("/", createAuthController());
-/**
- * dashboard routes
- */
-app.route("/", createDashboardController());
+  /**
+   * auth routes
+   */
+  .route("/", createAuthController())
+  /**
+   * dashboard routes
+   */
+  .route("/", createDashboardController());
 
 const port = env.PORT;
 
-serve(
-  {
-    fetch: app.fetch,
-    port,
-  },
-  (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`);
-  }
-);
+serve({
+  fetch: app.fetch,
+  port: port,
+});
