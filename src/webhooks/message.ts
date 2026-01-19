@@ -22,6 +22,7 @@ type WebhookMessageBody = {
 
 export const createWebhookMessage =
   (props: CreateWebhookProps) => async (message: MessageReceived) => {
+    if (!props.baseUrl) return;
     if (message.key.fromMe || message.key.remoteJid?.includes("broadcast"))
       return;
 

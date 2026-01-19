@@ -4,7 +4,7 @@ import { z } from "zod";
 import { createKeyMiddleware } from "../middlewares/key.middleware";
 import { toDataURL } from "qrcode";
 import { HTTPException } from "hono/http-exception";
-import { whatsapp } from "../whatsapp";
+import { whatsapp, whatsappStatuses } from "../whatsapp";
 
 export const createSessionController = () => {
   const startSessionSchema = z.object({
@@ -21,7 +21,12 @@ export const createSessionController = () => {
      */
     .get("/", createKeyMiddleware(), async (c) => {
       return c.json({
-        data: await whatsapp.getSessionsIds(),
+        data: Array.from(whatsappStatuses.entries()).map(
+          ([session, status]) => ({
+            session,
+            ...status,
+          })
+        ),
       });
     })
     /**
