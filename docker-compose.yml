@@ -3,7 +3,7 @@ services:
   # aplikasi nodejs wa gateway
   gateway2:
     container_name: stie-wa-gateway2
-    image: ghcr.io/mfth12/wa-gateway2-stie:latest
+    image: ghcr.io/mfth12/wa-gateway4-stie:latest
     environment:
       - PORT=${PORT}
       - KEY=${KEY}

@@ -1,13 +1,13 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: integration-wa-gateway2-stie
+name: integration-wa-gateway4-stie
 
 on:
   push:
-    branches: ["updated-master"]
+    branches: ["updated-v4"]
   pull_request:
-    branches: ["updated-master"]
+    branches: ["updated-v4"]
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Using Node.js version 18.x
+      - name: Using Node.js version 22.x
         uses: actions/setup-node@v3
         with:
           node-version: 22.x
@@ -26,7 +26,7 @@ jobs:
     # needs: build  # Menandakan bahwa job ini memerlukan penyelesaian dari job "build"
     steps:
       - uses: actions/checkout@v3
-      - name: Run deploy script. Deploy to ghcr.io as `wa-gateway2-stie` package.
+      - name: Run deploy script. Deploy to ghcr.io as `wa-gateway4-stie` package.
         # - name: Run deploy script
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
