@@ -30,3 +30,22 @@ sendButton?.addEventListener("click", async () => {
 
   alert("Failed to send message.");
 });
+
+/**
+ * Copy to Clipboard Functionality
+ */
+
+document.querySelectorAll("[data-copy]").forEach((button) => {
+  button.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    const textToCopy = button.getAttribute("data-copy");
+    if (!textToCopy) return;
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      alert("Copied to clipboard!");
+    } catch (err) {
+      alert("Failed to copy text: " + err);
+    }
+  });
+});
