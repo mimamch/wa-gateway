@@ -253,6 +253,9 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
+  .cursor-pointer {
+    cursor: pointer;
+  }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
@@ -264,6 +267,9 @@
   }
   .items-start {
     align-items: flex-start;
+  }
+  .justify-between {
+    justify-content: space-between;
   }
   .justify-center {
     justify-content: center;
@@ -506,6 +512,16 @@
   .focus-visible\:outline-green-600 {
     &:focus-visible {
       outline-color: var(--color-green-600);
+    }
+  }
+  .disabled\:cursor-not-allowed {
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  .disabled\:opacity-50 {
+    &:disabled {
+      opacity: 50%;
     }
   }
   .sm\:mx-auto {

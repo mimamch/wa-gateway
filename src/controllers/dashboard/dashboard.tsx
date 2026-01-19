@@ -42,7 +42,7 @@ export const createDashboardController = () => {
             ([session, status]) => ({
               session,
               ...status,
-            })
+            }),
           );
 
           return c.render(<SessionPage sessions={sessions} />);
@@ -76,10 +76,13 @@ export const createDashboardController = () => {
                 }
 
                 // Set a timeout to delete the QR code after 1 minutes
-                const timeout = setTimeout(() => {
-                  qrStore.delete(uuid);
-                  qrStoreTimeouts.delete(uuid);
-                }, 1 * 60 * 1000); // 1 minutes
+                const timeout = setTimeout(
+                  () => {
+                    qrStore.delete(uuid);
+                    qrStoreTimeouts.delete(uuid);
+                  },
+                  1 * 60 * 1000,
+                ); // 1 minutes
 
                 qrStoreTimeouts.set(uuid, timeout);
               },
@@ -106,10 +109,13 @@ export const createDashboardController = () => {
                   clearTimeout(qrStoreTimeouts.get(uuid)!);
                 }
                 // Set a timeout to delete the QR code after 1 minutes
-                const timeout = setTimeout(() => {
-                  qrStore.delete(uuid);
-                  qrStoreTimeouts.delete(uuid);
-                }, 1 * 60 * 1000); // 1 minutes
+                const timeout = setTimeout(
+                  () => {
+                    qrStore.delete(uuid);
+                    qrStoreTimeouts.delete(uuid);
+                  },
+                  1 * 60 * 1000,
+                ); // 1 minutes
 
                 qrStoreTimeouts.set(uuid, timeout);
               },
@@ -124,7 +130,35 @@ export const createDashboardController = () => {
           }
 
           return c.render(<CreateSessionPage id={uuid} />);
-        })
+        }),
+    )
+
+    /**
+     * message routes
+     */
+    .route(
+      "/messages",
+      new Hono().post("/send-text-api", async (c) => {
+        const { session, to, message } = await c.req.json();
+
+        if (!session || !to || !message) {
+          return c.json({ success: false, error: "Missing parameters" }, 400);
+        }
+
+        try {
+          await whatsapp.sendText({
+            sessionId: session,
+            text: message,
+            to,
+          });
+          return c.json({ success: true });
+        } catch (error) {
+          return c.json(
+            { success: false, error: (error as Error).message },
+            500,
+          );
+        }
+      }),
     );
 
   return app;
