@@ -52,7 +52,7 @@ services:
     ports:
       - "5001:5001"
     environment:
-      - KEY= # make your own api key (optional)
+      - KEY=secret # make your own api key
 ```
 
 ### 3. Start the container
@@ -63,24 +63,31 @@ Run the following command in the same directory as your `docker-compose.yaml`:
 docker compose up -d
 ```
 
-### 4. Open Browser & Scan QR Code
+### 4. Open Browser
 
 Visit this URL to scan the QR code from your WhatsApp device:
 
 ```
-http://localhost:5001/session/start?session=mysession
+http://localhost:5001
 ```
 
 > Replace `localhost` with your server's IP or domain if not running locally.
 
-> Replace `mysession` with your desired session name.
+#### - Login to dashboard with API Key that you set in `docker-compose.yaml`
 
-### 5. Send Your First Message
+![alt text](https://github.com/mimamch/wa-gateway/blob/master/readme/auth.png?raw=true)
+
+#### - Create your first session
+
+![alt text](https://github.com/mimamch/wa-gateway/blob/master/readme/sessions.png?raw=true)
+
+### 5. Send Your First Message via API
 
 Example to send a text message:
 
 ```
-http://localhost:5001/message/send-text?session=mysession&to=628123456789&text=Hello
+GET
+http://localhost:5001/message/send-text?session=SESSION_ID&to=628123456789&text=Hello
 ```
 
 ---
@@ -208,4 +215,5 @@ For full documentation, examples, and guides, visit:
 Let me know if you need configuration examples with environment variables (like webhook setup) or a multi-service deployment!
 
 ## Need Help?
+
 Get in touch with me in person via email 📧 [mimamch28@gmail.com](mailto:mimamch28@gmail.com)
