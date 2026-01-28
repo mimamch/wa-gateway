@@ -52,7 +52,7 @@ services:
     ports:
       - "5001:5001"
     environment:
-      - KEY= # make your own api key (optional)
+      - KEY=secret # make your own api key
 ```
 
 ### 3. Start the container
@@ -73,7 +73,13 @@ http://localhost:5001
 
 > Replace `localhost` with your server's IP or domain if not running locally.
 
-![alt text](https://github.com/mimamch/wa-gateway/blob/feat/dashboard/readme/auth.png?raw=true)
+#### - Login to dashboard with API Key that you set in `docker-compose.yaml`
+
+![alt text](https://github.com/mimamch/wa-gateway/blob/master/readme/auth.png?raw=true)
+
+#### - Create your first session
+
+![alt text](https://github.com/mimamch/wa-gateway/blob/master/readme/sessions.png?raw=true)
 
 ### 5. Send Your First Message via API
 
