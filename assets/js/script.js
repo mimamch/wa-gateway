@@ -49,3 +49,38 @@ document.querySelectorAll("[data-copy]").forEach((button) => {
     }
   });
 });
+
+/**
+ * Delete Session Functionality
+ */
+
+document.querySelectorAll("[data-delete]").forEach((button) => {
+  button.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    const session = button.getAttribute("data-delete");
+    if (!session) {
+      alert("Session ID is missing.");
+      return;
+    }
+    if (!confirm("Are you sure you want to delete this session?")) {
+      return;
+    }
+    try {
+      const res = await fetch(`/session/${session}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message || "Session deleted successfully.");
+        // Reload page to update session list
+        window.location.reload();
+      } else {
+        alert(data.message || "Failed to delete session.");
+      }
+    } catch (error) {
+      alert("Error deleting session: " + error.message);
+    }
+  });
+});
