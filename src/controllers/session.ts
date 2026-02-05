@@ -29,6 +29,59 @@ export const createSessionController = () => {
         ),
       });
     })
+
+    /**
+     *
+     * GET /session/:session
+     * Mendapatkan detail session berdasarkan session ID
+     *
+     */
+    .get("/:session", createKeyMiddleware(), async (c) => {
+      const sessionId = c.req.param("session");
+
+      if (!sessionId) {
+        throw new HTTPException(400, {
+          message: "Session ID is required",
+        });
+      }
+
+      // Get session from whatsapp instance
+      const session = await whatsapp.getSessionById(sessionId);
+      
+      if (!session) {
+        throw new HTTPException(404, {
+          message: `Session '${sessionId}' not found`,
+        });
+      }
+
+      // Get status from whatsappStatuses map
+      const statusInfo = whatsappStatuses.get(sessionId);
+
+      // Get user information from session
+      const user = session.sock?.user;
+
+      return c.json({
+        success: true,
+        data: {
+          session: sessionId,
+          status: statusInfo?.status || "unknown",
+          details: {
+            name: statusInfo?.details?.name || user?.name || "",
+            phoneNumber: statusInfo?.details?.phoneNumber || user?.id?.split(":")[0] || "",
+          },
+          connection: {
+            isConnected: statusInfo?.status === "connected",
+            lastUpdate: new Date().toISOString(),
+          },
+          metadata: {
+            platform: (session.sock?.user as any)?.platform || "unknown",
+            deviceManufacturer: (session.sock?.user as any)?.deviceManufacturer || "unknown",
+            deviceModel: (session.sock?.user as any)?.deviceModel || "unknown",
+          },
+        },
+      });
+    })
+
     /**
      *
      * POST /session/start
@@ -135,6 +188,51 @@ export const createSessionController = () => {
       return c.json({
         data: "success",
       });
+    })
+
+    /**
+     *
+     * DELETE /session/:session
+     * Menghapus session berdasarkan session ID
+     *
+     */
+    .delete("/:session", createKeyMiddleware(), async (c) => {
+      const sessionId = c.req.param("session");
+
+      if (!sessionId) {
+        throw new HTTPException(400, {
+          message: "Session ID is required",
+        });
+      }
+
+      // Check if session exists
+      const session = await whatsapp.getSessionById(sessionId);
+      if (!session) {
+        throw new HTTPException(404, {
+          message: `Session '${sessionId}' not found`,
+        });
+      }
+
+      try {
+        // Delete the session
+        await whatsapp.deleteSession(sessionId);
+
+        // Remove from status map
+        whatsappStatuses.delete(sessionId);
+
+        return c.json({
+          success: true,
+          message: `Session '${sessionId}' deleted successfully`,
+          data: {
+            session: sessionId,
+            deletedAt: new Date().toISOString(),
+          },
+        });
+      } catch (error) {
+        throw new HTTPException(500, {
+          message: `Failed to delete session: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
     });
 
   return app;
