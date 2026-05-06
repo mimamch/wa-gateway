@@ -184,6 +184,18 @@ Example webhook endpoints:
 
 ---
 
+## Storage Adapter
+
+By default, sessions are stored using SQLite. To use Redis instead, set `REDIS_URL` in your environment (for example, in your `.env` file):
+
+```env
+REDIS_URL="redis://:password@host:6379"
+```
+
+If `REDIS_URL` is not set, the app will fall back to SQLite automatically.
+
+---
+
 ## Access Media Files
 
 Media files are stored inside the `./media` directory in the container. You can access them via:

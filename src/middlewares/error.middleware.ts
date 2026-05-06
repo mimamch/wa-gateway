@@ -10,12 +10,12 @@ export const globalErrorMiddleware: ErrorHandler = (err, c) => {
       {
         message: err.message,
       },
-      err.status
+      err.status,
     );
   }
 
   if (ApplicationError.isApplicationError(err)) {
-    return c.json(err.getResponseMessage(), err.code as StatusCode);
+    return c.json(err.getResponseMessage(), err.code);
   }
 
   console.error("APP ERROR:", err);

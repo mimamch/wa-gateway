@@ -1,4 +1,4 @@
-import { SQLiteAdapter, Whatsapp } from "wa-multi-session";
+import { RedisAdapter, SQLiteAdapter, Whatsapp } from "wa-multi-session";
 import { createWebhookSession } from "./webhooks/session";
 import { env } from "./env";
 import { CreateWebhookProps } from "./webhooks";
@@ -23,8 +23,14 @@ const webhookSession = createWebhookSession(webhookProps);
 
 const webhookMessage = createWebhookMessage(webhookProps);
 
+const adapter = env.REDIS_URL
+  ? new RedisAdapter({
+      url: env.REDIS_URL,
+    })
+  : new SQLiteAdapter();
+
 export const whatsapp = new Whatsapp({
-  adapter: new SQLiteAdapter(),
+  adapter: adapter,
 
   onConnecting(sessionId) {
     whatsappStatuses.set(sessionId, {
