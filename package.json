@@ -1,12 +1,13 @@
 {
   "name": "wa-gateway",
-  "version": "4.6.3",
+  "version": "4.7.0",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
+    "build": "ncc build src/index.ts -o dist -m",
     "build:css": "tailwindcss -i ./src/globals.css  -o ./assets/style.css --watch",
     "dev:ui": "concurrently \"tsx watch src/index.ts\" \"tailwindcss -i ./src/globals.css -o ./assets/style.css --watch\"",
-    "start": "tsx src/index.ts"
+    "start": "node dist/index.js"
   },
   "author": {
     "name": "mimamch",
@@ -23,14 +24,14 @@
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.8",
+    "esbuild": "^0.28.0",
     "express": "^4.18.2",
     "hono": "^4.6.13",
     "http-errors": "~1.6.3",
     "moment": "^2.29.4",
     "morgan": "~1.9.1",
     "qrcode": "^1.5.1",
-    "tsx": "^4.19.2",
-    "wa-multi-session": "^4.2.3",
+    "wa-multi-session": "^4.3.0",
     "zod": "^3.23.8"
   },
   "repository": {
@@ -41,6 +42,9 @@
     "@tailwindcss/cli": "^4.1.18",
     "@types/node": "^22.10.1",
     "@types/qrcode": "^1.5.5",
-    "tailwindcss": "^4.1.18"
+    "@vercel/ncc": "^0.38.4",
+    "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   }
 }

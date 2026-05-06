@@ -1,2 +1,5 @@
 .env
 node_modules
+dist
+media/*
+!media/.gitkeep

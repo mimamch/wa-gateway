@@ -18,7 +18,7 @@ const app = new Hono()
   .use(
     logger((...params) => {
       params.map((e) => console.log(`${moment().toISOString()} | ${e}`));
-    })
+    }),
   )
   .use(cors())
 
@@ -33,13 +33,13 @@ const app = new Hono()
     "/media/*",
     serveStatic({
       root: "./",
-    })
+    }),
   )
   .use(
     "/assets/*",
     serveStatic({
       root: "./",
-    })
+    }),
   )
 
   /**
@@ -71,7 +71,10 @@ const app = new Hono()
 
 const port = env.PORT;
 
-serve({
-  fetch: app.fetch,
-  port: port,
-});
+serve(
+  {
+    fetch: app.fetch,
+    port: port,
+  },
+  () => console.log(`Server is running on port ${port}`),
+);
