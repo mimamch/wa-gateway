@@ -52,7 +52,9 @@ services:
     ports:
       - "5001:5001"
     environment:
-      - KEY=secret # make your own api key
+      - KEY=secret # optional, make your own api key
+      - WEBHOOK_BASE_URL= # optional, if you need webhook
+      - REDIS_URL= # optional, if you want store session to redis instead of local files
 ```
 
 ### 3. Start the container
