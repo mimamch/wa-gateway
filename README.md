@@ -9,6 +9,8 @@ A headless multi-session WhatsApp gateway with multi-device support, easy to set
 
 📌 Also see: [wa-multi-session](https://github.com/mimamch/wa-multi-session)
 
+💬 Or use Official Whatsapp Business API with [Notizy: AI Customer Service](https://notizy.id)
+
 ---
 
 ## ⚠️ Prerequisites
