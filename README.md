@@ -9,7 +9,7 @@ A headless multi-session WhatsApp gateway with multi-device support, easy to set
 
 📌 Also see: [wa-multi-session](https://github.com/mimamch/wa-multi-session)
 
-💬 Or use Official Whatsapp Business API with [Notizy: AI Customer Service](https://notizy.id)
+💬 Or use Official Whatsapp Business API with [Notizy: AI Customer Service](https://notizy.id?utm_source=gh-wa-gateway)
 
 ---
 
@@ -193,7 +193,7 @@ Example webhook endpoints:
 By default, sessions are stored using SQLite. To use Redis instead, set `REDIS_URL` in your environment (for example, in your `.env` file):
 
 ```env
-REDIS_URL="redis://:password@host:6379"
+REDIS_URL="redis://default:password@host:6379"
 ```
 
 If `REDIS_URL` is not set, the app will fall back to SQLite automatically.
